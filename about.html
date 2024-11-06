@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About the Developer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: url('images/ice.jpg') no-repeat center center fixed; /* Background image */
+            background-size: cover;
+            color: #333;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9); /* White background with transparency */
+            backdrop-filter: blur(8px); /* Blur effect */
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+            position: relative; /* Relative positioning for close button */
+        }
+
+        .card img {
+            border-radius: 50%; /* Circular image */
+            width: 100px;
+            height: 100px;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+
+        .card h2 {
+            margin: 10px 0;
+            font-size: 24px;
+            color: #5a3e36; /* Dark brown color */
+        }
+
+        .card p {
+            font-size: 16px;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #007bff; /* Link color */
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .card a:hover {
+            color: #0056b3; /* Darker blue on hover */
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #ff0000; /* Red color for close button */
+        }
+    </style>
+    <script>
+        function closeCard() {
+            // Redirect to the previous page when closing the card
+            window.history.back(); // Goes back to the previous page
+        }
+    </script>
+</head>
+<body>
+
+    <div class="card" id="developerCard">
+        <button class="close-btn" onclick="closeCard()">&times;</button> <!-- Close button -->
+        <img src="images/mars.jpg" alt="Developer Photo"> <!-- Change to your developer image path -->
+        <h2>About the Developer</h2>
+        <p>Hello! I'm Kaleab Teame Gebremaryam, a passionate web developer with a love for creating beautiful and functional websites.</p>
+        <p>I specialize in PHP, JavaScript, and Python, with a keen interest in machine learning and AI integration.</p>
+        <p>Feel free to reach out for collaborations or inquiries!</p>
+        <p>
+            <a href="mailto:kale200017@gmail.com">Email Me</a>
+        </p>
+        <p>
+            <a href="https://wa.me/256750082702" target="_blank">Call Me on WhatsApp</a> <!-- WhatsApp link -->
+        </p>
+    </div>
+
+</body>
+</html>
