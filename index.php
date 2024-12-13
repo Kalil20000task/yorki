@@ -6,48 +6,79 @@ if (!isset($_SESSION['username'])) {
     header('Location: login.php'); // Redirect to login page if not logged in
     exit();
 }
-?>
-<?php
-// Connect to the database to get the prices
-$servername = "localhost";
-$username = "root"; // change to your database username
-$password = ""; // change to your database password
-$dbname = "icemaker_database"; // change to your database name
+require "connection.php";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Initialize variables for input
+// $expenseAmount = '';
+// $reason = '';
+$currentDate = date('Y-m-d');
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['delete'])) {
+        // Handle deletion
+        $idToDelete = $_POST['delete'];
+        $deleteSql = "DELETE FROM attendance_table WHERE id = $idToDelete";
+        $conn->query($deleteSql);
+    } elseif (isset($_POST['export'])) {
+        // Handle CSV export
+        $filename = "attendance_" . date('Y/m/d') . ".csv";
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
-// Get prices from the table
-$sql = "SELECT * FROM prices";
-$result = $conn->query($sql);
+        // Output data to CSV
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['ID', 'Name', 'Course','Reason' ,'Date']); // CSV header
 
-$prices = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $prices[$row['measurement']] = $row['prices'];
+        $sql = "SELECT * FROM attendance_table";
+        $attendanceResult = $conn->query($sql);
+        if ($attendanceResult->num_rows > 0) {
+            while ($row = $attendanceResult->fetch_assoc()) {
+                fputcsv($output, $row);
+            }
+        }
+        fclose($output);
+        exit();
+    } else {
+        // Handle expense addition
+       
+        $name = $_POST['name'];
+        $reason = $_POST['reason'];
+        $course = $_POST['course'];
+        
+        
+        // Remove commas for database storage
+        // $expenseAmount = str_replace(',', '', $expenseAmount);
+        
+        // Insert data into the database
+        $sql = "INSERT INTO attendance_table (name,course, reason, date) VALUES ('$name', '$course', '$reason','$currentDate')";
+        if ($conn->query($sql) === TRUE) {
+            // Redirect after successful submission to prevent form resubmission on refresh
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit(); // Ensure no further code is executed
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     }
-} else {
-    echo "No prices found";
 }
 
-$conn->close();
+// Fetch existing expenses
+$sql = "SELECT * FROM attendance_table order by id desc limit 15 ";
+$attendanceResult = $conn->query($sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Page</title>
+    <title>Student Record</title>
     <style>
+        /* Styles remain unchanged */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background: url('images/ice.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
@@ -60,28 +91,21 @@ $conn->close();
             align-items: center;
             justify-content: space-between;
         }
-        .header .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-        }
         .header a {
             color: #fff;
             margin: 0 15px;
             text-decoration: none;
             font-size: 18px;
         }
-        .header a:hover {
-            text-decoration: underline;
-        }
         .header .logout-button {
-            background-color: red;
+            background-color: red; /* Red color for the logout button */
             color: white;
             padding: 10px 15px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
+            text-decoration: none; /* Remove underline from link */
+            display: inline-block; /* Allow padding and background */
         }
         .drawer {
             height: 100%;
@@ -115,72 +139,263 @@ $conn->close();
             cursor: pointer;
         }
         .container {
+            margin: 20px auto;
+            padding: 20px;
             background: rgba(0, 0, 0, 0.7);
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            padding: 20px;
-            width: 350px;
             color: #fff;
-            margin: 20px auto;
+            width: 40%;
         }
         .container h2 {
             text-align: center;
+        }
+        .tablecontainer {
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            color: #fff;
+            width: 80%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 20px;
-            color: #f8f8f8;
+            table-layout: fixed;
+        }
+        table, th, td {
+            border: 1px solid #555;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            word-break: break-word;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #555;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #444;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            width: calc(50% - 22px);
+            margin-bottom: 10px;
+            background-color: #444;
+            color: #fff;
+            display: inline-block;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            width: 150px;
+            margin-top: 10px;
+            align-self: center;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        /* Add this style to your existing <style> section */
+        .delete-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #dc3545; /* Red background color */
+            color: #fff;
+            cursor: pointer;
+            width: 80px; /* Adjust width if needed */
+        }
+
+        .delete-button:hover {
+            opacity: 0.9; /* Slightly darken on hover */
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            margin-right: 10px;
+            width: 30%;
+            text-align: right;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: center;
         }
         .input-group {
             margin-bottom: 15px;
         }
         .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #ccc;
+            margin-left: 50px;
+            width: 30%;
+            text-align: right;
         }
         .input-group input, .input-group select {
-            width: 100%;
+            
+            width: 60%;
             padding: 10px;
             border: 1px solid #555;
             border-radius: 5px;
             font-size: 16px;
             background-color: #444;
             color: #f8f8f8;
+            margin-left: 10px;
         }
         .input-group input:focus, .input-group select:focus {
             border-color: #007bff;
         }
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px; /* Add gap between buttons */
-        }
-        .buttons button {
-            width: 48%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #555;
-            color: #f8f8f8;
-        }
-        .buttons .submit {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .buttons .customer {
-            background-color: #777; /* Faded background */
-            color: #ccc; /* Faded text */
-        }
-        .buttons .customer.active {
-            background-color: #ffc107; /* Bright background for active state */
-            color: #000; /* Dark text for active state */
-        }
-        .buttons button:hover {
-            opacity: 0.9;
-        }
     </style>
+</head>
+<body>
+    <?php
+    include "header.php";
+    ?>
+ <!-- Drawer Navigation -->
+ 
+    
+
+    <div class="container">
+        <h2>Student Record</h2>
+        <form method="POST" action="">
+            <div class="form-group">
+                <label for="StudentName">Student Name:</label>
+                <input type="text" id="StudentName" name="name" placeholder="Student Name" required  ">
+            </div>
+            <div class="input-group">
+            <label for="coursename">Course Name:</label>
+            <select id="category" name="course">
+              
+                <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C3L</option>
+                <option value="Accounting_ACFN24_C2L">Accounting_ACFN24_C4L</option>
+                <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C5L</option>
+                <option value="Accounting_ACFN24_C6L">Accounting_ACFN24_C6L</option>
+                <option value="Accounting_ACFNS24_C5L">Accounting_ACFNS24_C5L</option>
+                <option value="Nursing_CNA24_C4L">Nursing_CNA24_C4L</option>
+                <option value="Nursing_CNA24_C5L">Nursing_CNA24_C5L</option>
+                <option value="Nursing_CNA24_C6L">Nursing_CNA24_C6L</option>
+                <option value="Nursing_CNA24_C7L">Nursing_CNA24_C7L</option>
+
+                <option value="Digital Marketing_DMA24_C1L">Digital Marketing_DMA24_C1L</option>
+                <option value="Digital Marketing_DMA24_C2L">Digital Marketing_DMA24_C2L</option>
+                <option value="IT_IT24_C4L">IT_IT24_C4L</option> 
+                <option value="IT_IT24_C5L">IT_IT24_C5L</option> 
+                <option value="BM24_C1L">BM24_C1L</option> 
+                <option value="CB24_C4L">CB24_C4L</option>
+                <option value="CB24_C5L">CB24_C5L</option>
+
+                <option value="PLMB_C1L">PLMB24_C1L</option> 
+                <option value="PLMB_C2L">PLMB24_C2L</option> 
+
+                <option value="AM24_C1L">AM24_C1L</option>
+                <option value="AM24_C2L">AM24_C2L</option>
+
+                <option value="ENG24_A0-C1L">ENG24_A0-C1L</option>
+                <option value="ENG24_A0-C4L">ENG24_A1-C4L</option>
+                <option value="ENG24_A1-C5L">ENG24_A1-C5L</option>
+                <option value="ENG24_A1-C6L">ENG24_A1-C6L</option>
+                <option value="ENG24_A2-C4L">ENG24_A2-C4L</option>
+                <option value="ENG24_B1-C1L">ENG24_B1-C1L</option>
+                <option value="ENG24_B2-C1L">ENG24_B2-C1L</option>
+                <option value="IELTS24">IELTS</option>
+
+
+
+
+
+
+
+            </select>
+            </div>
+            <div class="input-group">
+            <label for="category">Reason:</label>
+            <select id="category" name="reason">
+                <option value="Notprovided">Not provided</option>
+                <option value="Sick">Sick</option>
+                <option value="Acknowledged">Acknowledged</option>
+                <option value="Busy">Busy</option>
+                <option value="Drop out">Drop Out</option>
+                <option value="Pending">pending</option>
+                <option value="Appointment">appointment</option>
+                <option value="Couldnot contact">couldnot contact</option>
+                <option value="Rain">Rain</option>
+                <option value="Payment">Payment</option>
+                <option value="Family issue">Family issue</option>
+                
+            </select>
+           </div>
+
+           
+            <div class="input-group">
+            <input type="hidden" name="date" value="<?php echo $currentDate; ?>">
+            <div class="form-actions">
+                <button type="submit">Submit</button>
+            </div>
+    </div>
+
+        </form>
+    </div>
+
+    <!-- Expenses Table -->
+    <div class="tablecontainer">
+        <h2>Student Record</h2>
+        <form method="POST" action="">
+            <button type="submit" name="export" style="margin-bottom: 20px; background-color: #28a745;">Export to CSV</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Manage</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Fetch attendanceResult from the database
+                $totalSum = 0;
+                if ($attendanceResult->num_rows > 0) {
+                    while ($row = $attendanceResult->fetch_assoc()) {
+                        
+                               
+                        echo "<tr>
+                                <td>{$row['id']}</td>
+                                <td>{$row['name']} </td>
+                                <td>{$row['course']} </td>
+                                <td>{$row['reason']}</td>
+                                <td>{$row['date']}</td>
+                                <td>
+                        <form method='POST' action='' style='display:inline;'>
+                            <button type='submit' name='delete' value='{$row['id']}' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this expense?');\">Delete</button>
+                        </form>
+                    </td>
+
+                              </tr>";
+                        // $totalSum += $row['expense']; // Summing up expenses
+                    }
+                } else {
+                    echo "<tr><td colspan='5'>No attendanceResult found.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+        
+    </div>
+
     <script>
-        // Function to open the drawer
         function openDrawer() {
             document.getElementById("drawer").style.width = "250px";
         }
@@ -189,170 +404,15 @@ $conn->close();
         function closeDrawer() {
             document.getElementById("drawer").style.width = "0";
         }
-
-        // JavaScript to calculate the total price dynamically
-        const prices = <?php echo json_encode($prices); ?>;
-        let customerDiscount = false; // Track discount state
-
-        // Function to calculate the total price
-        function formatNumberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-// Function to calculate the total price
-function calculateTotal() {
-    const ton = parseFloat(document.getElementById('ton').value) || 0;
-    const jerican = parseFloat(document.getElementById('jerican').value) || 0;
-    const packet = parseFloat(document.getElementById('packet').value) || 0;
-    const sacks = parseFloat(document.getElementById('sacks').value) || 0;
-
-    let tonPrice = prices['ton'];
-
-    // Apply discount if customer button is active
-    if (customerDiscount) {
-        tonPrice = Math.max(0, tonPrice - 10000); // Ensure the price does not go negative
-    }
-
-    let total = (ton * tonPrice) + (jerican * prices['jerican']) +
-                (packet * prices['packet']) + (sacks * prices['sacks']);
-
-    total = Math.round(total); // Round to nearest whole number
-
-    // Display the formatted total in the 'total-display' field
-    document.getElementById('total-display').value = formatNumberWithCommas(total);
-    // Store the actual total in the hidden 'total' field
-    document.getElementById('total-display').value = total;
-}
-
-        // Toggle the customer discount
-        function toggleCustomerDiscount() {
-            customerDiscount = !customerDiscount; // Toggle discount state
-            const customerBtn = document.getElementById('customer-btn');
-            if (customerDiscount) {
-                customerBtn.classList.add('active');
-            } else {
-                customerBtn.classList.remove('active');
-            }
-            calculateTotal(); // Recalculate total with new discount state
+        function formatNumber(input) {
+            // Remove non-numeric characters and format number
+            let value = input.value.replace(/,/g, '');
+            input.value = new Intl.NumberFormat().format(value);
         }
-
-        function completeTransaction() {
-            // Save the data to the database using AJAX
-            const currentDate = new Date().toISOString().slice(0, 10);
-
-            const ton = parseFloat(document.getElementById('ton').value) || 0;
-            const jerican = parseFloat(document.getElementById('jerican').value) || 0;
-            const packet = parseFloat(document.getElementById('packet').value) || 0;
-            const sacks = parseFloat(document.getElementById('sacks').value) || 0;
-            const category = document.getElementById('category').value;
-            const total = parseFloat(document.getElementById('total-display').value)|| 0;
-
-            // Make an AJAX request to save data to the database
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "save_transaction.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    alert("Transaction completed successfully!");
-                    // Reset the form
-                    document.getElementById('ton').value = '';
-                    document.getElementById('jerican').value = '';
-                    document.getElementById('packet').value = '';
-                    document.getElementById('sacks').value = '';
-                    document.getElementById('total-display').value = '';
-                    document.getElementById('category').value = 'haben';
-                    customerDiscount = false; // Reset discount
-                    document.getElementById('customer-btn').classList.remove('active');
-                }
-            };
-            xhr.send("ton=" + ton + "&jerican=" + jerican + "&packet=" + packet +
-                     "&sacks=" + sacks + "&category=" + category + "&total=" + total +
-                     "&date=" + currentDate);
-        }
-
-        // Event listeners for automatic calculation when input changes
-        document.addEventListener('DOMContentLoaded', function () {
-            const inputs = document.querySelectorAll('#ton, #jerican, #packet, #sacks');
-            inputs.forEach(input => {
-                input.addEventListener('input', calculateTotal);
-            });
-        });
-
-
-
-
-        
     </script>
-</head>
-<body>
-    <div class="header">
-        <span class="menu-icon" onclick="openDrawer()">&#9776; Menu</span>
-        <div class="menu">
-            
-        <a href="index.php">Home</a>
-        <a href="details.php"> Details</a>
-        <a href="attendance.php"> Attendance</a>
-        
-        </div>
-        <a href="logout.php" class="logout-button">Logout</a>
-    </div>
-
-    <div id="drawer" class="drawer">
-        <span class="close-btn" onclick="closeDrawer()">&times;</span>
-        <a href="index.php">Home</a>
-        <a href="details.php"> Details</a>
-        <a href="attendance.php">Attendance</a>
-        <a href="#" onclick="openSettingsModal()"> Settings</a>
-        <a href="about.html">ብዛዕባና / About</a>
-    </div>
-
-    <div class="container">
-        <h2>Mark List</h2>
-        <div class="input-group">
-            <label for="coursename">Course Name:</label>
-            <select id="category" name="course">
-                <option value="Accounting_ACFN24_C2L">Accounting_ACFN24_C2L</option>
-                <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C3L</option>
-                <option value="Accounting_ACFN24_C2L">Accounting_ACFN24_C4L</option>
-                <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C5L</option>
-            </select>
-        </div><br/>
-
-
-
-        <div class="input-group">
-                <label for="StudentName">Student Name:</label>
-                <input type="text" id="StudentName" name="name" placeholder="Student Name" required  ">
-        </div>
-        <div class="input-group">
-            <label for="jerican">ጀሪካን  (<?php echo $prices['jerican']; ?> UGX/jerican):</label>
-            <input type="number" id="jerican" min="0" step="1">
-        </div>
-        <div class="input-group">
-            <label for="packet">ፓኬት (<?php echo $prices['packet']; ?> UGX/packet):</label>
-            <input type="number" id="packet" min="0" step="1">
-        </div>
-        <div class="input-group">
-            <label for="sacks">ሳክስ (<?php echo $prices['sacks']; ?> UGX/sack):</label>
-            <input type="number" id="sacks" min="0" step="1">
-        </div>
-        <div class="input-group">
-            <label for="category">ተቐባሊ  ገንዘብ / Received by:</label>
-            <select id="category">
-                <option value="haben">Haben</option>
-                <option value="other">Other</option>
-            </select>
-        </div>
-        <div class="input-group">
-    <label for="total-display">ድምር ሕሳብ / Total Price (UGX):</label>
-    <input type="text" id="total-display" value="" oninput="updateTotalFromInput()"> <!-- Editable total field -->
-    <input type="hidden" id="total"> <!-- Store actual numeric total -->
-</div>
-
-        <div class="buttons">
-            <button class="submit" onclick="completeTransaction()">ወድእ / Submit</button>
-            <button id="customer-btn" class="customer" onclick="toggleCustomerDiscount()">Customer</button>
-        </div>
-    </div>
 </body>
 </html>
+
+<?php
+$conn->close(); // Close database connection
+?>

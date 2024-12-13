@@ -11,7 +11,7 @@ if (!isset($_SESSION['username'])) {
 $servername = "localhost";
 $username = "root"; // Update with your database username
 $password = ""; // Update with your database password
-$dbname = "icemaker_database"; // Update with your database name
+$dbname = "trainup"; // Update with your database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -26,12 +26,12 @@ $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : date('Y-m-01'); 
 $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : date('Y-m-d'); // Default to today's date
 
 // Fetch filtered data
-$sql = "SELECT * FROM transactions WHERE date BETWEEN '$startDate' AND '$endDate'";
-$result = $conn->query($sql);
+// $sql = "SELECT * FROM acfns WHERE date BETWEEN '$startDate' AND '$endDate'";
+// $result = $conn->query($sql);
 
 
-$sql2 = "SELECT expense FROM expenses_table WHERE date BETWEEN '$startDate' AND '$endDate'";
-$expensesResult = $conn->query($sql2);
+// $sql2 = "SELECT expense FROM expenses_table WHERE date BETWEEN '$startDate' AND '$endDate'";
+// $expensesResult = $conn->query($sql2);
 
 // Initialize total sum
 $totalSum = 0;
@@ -39,7 +39,7 @@ $totalSum = 0;
 // Delete record if delete_id is set
 if (isset($_GET['delete_id'])) {
     $deleteId = $_GET['delete_id'];
-    $deleteSql = "DELETE FROM transactions WHERE id = $deleteId";
+    $deleteSql = "DELETE FROM acfns WHERE id = $deleteId";
     if ($conn->query($deleteSql) === TRUE) {
         echo "<script>alert('Record deleted successfully');</script>";
         echo "<script>window.location.href='details.php?deleted=true';</script>";
@@ -236,29 +236,13 @@ if (isset($_GET['delete_id'])) {
     </script>
 </head>
 <body>
-    <!-- Drawer Navigation -->
-    <div id="drawer" class="drawer">
-        <span class="close-btn" onclick="closeDrawer()">&times;</span>
-        <a href="index.php">Home</a>
-        <a href="details.php"> Details</a>
-        <a href="attendance.php">Attendance</a>
-        <a href="#" onclick="openSettingsModal()"> Settings</a>
-        <a href="about.html">ብዛዕባና / About</a>
-    </div>
-
-    <!-- Header Navigation -->
-    <div class="header">
-        <span class="menu-icon" onclick="openDrawer()">&#9776;</span> <!-- Drawer toggle button -->
-        <div class="title" style="color: #5a3e36;"><h2>Dalia IceWorks</h2></div> <!-- Page name on the left side -->
-        <a href="index.php">Home</a>
-        <a href="details.php">Details</a>
-        <a href="attendance.php">Attendance</a>
-        <a class="logout-button" href="logout.php">Logout</a> <!-- Red Logout button in the menu -->
-    </div>
+<?php
+include "header.php";
+?>
     
     <!-- Filter Form -->
     <div class="container">
-        <h2>ጸብጻብ መሸጣ / Transaction Details</h2>
+        <h2>Marklist</h2>
         <form method="POST" class="filter">
             <input type="date" name="startDate" value="<?php echo $startDate; ?>" required>
             <input type="date" name="endDate" value="<?php echo $endDate; ?>" required>
@@ -278,33 +262,35 @@ if (isset($_GET['delete_id'])) {
             <thead>
                 <tr>
                 <th>Id</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Term1</th>
+                    <th>Term2</th>
+                    <th>Term3</th>
+                   
+                    <th>Total </th>
+                    <th>Average</th>
+                    <th>Set by</th>
                     <th>Date</th>
-                    <th>Ton</th>
-                    <th>Jerican</th>
-                    <th>Packet</th>
-                    <th>Sacks</th>
-                    <th>Category</th>
-                    <th>Total Price</th>
-                    <th>Manage</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 //calculating expense fromexpense table
-                 $totalexpenseSum = 0;
+                // $totalexpenseSum = 0;
 
-                 if ($expensesResult->num_rows > 0) {
-                      while ($row = $expensesResult->fetch_assoc()) {
+                //  if ($expensesResult->num_rows > 0) {
+                //       while ($row = $expensesResult->fetch_assoc()) {
         
-                          $totalexpenseSum += $row['expense']; // Summing up expenses
-                          }
-                     }
+                //           $totalexpenseSum += $row['expense']; // Summing up expenses
+                //           }
+                //      }
 
 
 
                 // Check for search input
                 $search = isset($_POST['search']) ? $_POST['search'] : '';
-                $sql = "SELECT * FROM transactions WHERE date BETWEEN '$startDate' AND '$endDate'";
+                $sql = "SELECT * FROM acfns WHERE date BETWEEN '$startDate' AND '$endDate'";
                 if ($search) {
                     $sql .= " AND category LIKE '%$search%'";
                 }
@@ -317,13 +303,17 @@ if (isset($_GET['delete_id'])) {
                         $formattedTotal = number_format($row['total'], 0); // Format total with commas
                         echo "<tr>
                             <td>{$row['id']}</td>
-                            <td>{$currentDate}</td>
-                            <td>{$row['ton']}</td>
-                            <td>{$row['jerican']}</td>
-                            <td>{$row['packet']}</td>
-                            <td>{$row['sacks']}</td>
-                            <td>{$row['category']}</td>
+                           
+                            <td>{$row['name']}</td>
+                            <td>{$row['course']}</td>
+                            <td>{$row['term1']}</td>
+                            <td>{$row['term2']}</td>
+                            <td>{$row['term3']}</td>
                             <td>{$formattedTotal}</td>
+                            <td>{$row['average']}</td>
+                            <td>{$row['setby']}</td>
+                             <td>{$currentDate}</td>
+                            
                             <td>
                                 <button class='delete-btn' onclick=\"confirmDeletion('details.php?delete_id={$row['id']}')\">Delete</button>
                             </td>
@@ -336,17 +326,12 @@ if (isset($_GET['delete_id'])) {
                 ?>
             </tbody>
             <tfoot>
-                <tr>
+                <!-- <tr>
                     <th style="color:yellow" colspan="7">Total Revenue</th>
-                    <th style="color:yellow"><?php echo number_format($totalSum, 0); ?></th>
-                    <th  style="color:orange"><?php echo number_format("-" . $totalexpenseSum, 0); ?></th>
-                </tr>
-                <tr >
-                    <th style="color:skyblue" colspan="7">Net Income</th>
-                    <?php $net= $totalSum- $totalexpenseSum ?>
-                    <th style="color:skyblue"><?php echo number_format($net, 0); ?></th>
-                    <th></th>
-                </tr>
+                    <th style="color:yellow"></th>
+                    <th  style="color:orange"></th>
+                </tr> -->
+               
             </tfoot>
         </table>
     </div>

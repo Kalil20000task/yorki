@@ -6,11 +6,24 @@ if (!isset($_SESSION['username'])) {
     header('Location: login.php'); // Redirect to login page if not logged in
     exit();
 }
-require "connection.php";
+
+// Connect to the database
+$servername = "localhost";
+$username = "root"; // Update with your database username
+$password = ""; // Update with your database password
+$dbname = "icemaker_database"; // Update with your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 // Initialize variables for input
-// $expenseAmount = '';
-// $reason = '';
+$expenseAmount = '';
+$reason = '';
 $currentDate = date('Y-m-d');
 
 // Handle form submission
@@ -18,22 +31,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['delete'])) {
         // Handle deletion
         $idToDelete = $_POST['delete'];
-        $deleteSql = "DELETE FROM attendance_table WHERE id = $idToDelete";
+        $deleteSql = "DELETE FROM expenses_table WHERE id = $idToDelete";
         $conn->query($deleteSql);
     } elseif (isset($_POST['export'])) {
         // Handle CSV export
-        $filename = "attendance_" . date('Y/m/d') . ".csv";
+        $filename = "expenses_" . date('Y/m/d') . ".csv";
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
         // Output data to CSV
         $output = fopen('php://output', 'w');
-        fputcsv($output, ['ID', 'Name', 'Course','Reason' ,'Date']); // CSV header
+        fputcsv($output, ['ID', 'Expense', 'Reason', 'Date']); // CSV header
 
-        $sql = "SELECT * FROM attendance_table";
-        $attendanceResult = $conn->query($sql);
-        if ($attendanceResult->num_rows > 0) {
-            while ($row = $attendanceResult->fetch_assoc()) {
+        $sql = "SELECT * FROM expenses_table";
+        $expensesResult = $conn->query($sql);
+        if ($expensesResult->num_rows > 0) {
+            while ($row = $expensesResult->fetch_assoc()) {
                 fputcsv($output, $row);
             }
         }
@@ -48,10 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         
         // Remove commas for database storage
-        // $expenseAmount = str_replace(',', '', $expenseAmount);
+        $expenseAmount = str_replace(',', '', $expenseAmount);
         
         // Insert data into the database
-        $sql = "INSERT INTO attendance_table (name,course, reason, date) VALUES ('$name', '$course', '$reason','$currentDate')";
+        $sql = "INSERT INTO attendance_table (name,course, reason, date) VALUES ('$name', '$course', '$reason')";
         if ($conn->query($sql) === TRUE) {
             // Redirect after successful submission to prevent form resubmission on refresh
             header('Location: ' . $_SERVER['PHP_SELF']);
@@ -63,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Fetch existing expenses
-$sql = "SELECT * FROM attendance_table order by id desc limit 15 ";
-$attendanceResult = $conn->query($sql);
+$sql = "SELECT * FROM attendance_table";
+$expensesResult = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -232,36 +245,13 @@ $attendanceResult = $conn->query($sql);
             display: flex;
             justify-content: center;
         }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            margin-left: 50px;
-            width: 30%;
-            text-align: right;
-        }
-        .input-group input, .input-group select {
-            
-            width: 60%;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: #444;
-            color: #f8f8f8;
-            margin-left: 10px;
-        }
-        .input-group input:focus, .input-group select:focus {
-            border-color: #007bff;
-        }
     </style>
 </head>
 <body>
-    <?php
-    include "header.php";
-    ?>
  <!-- Drawer Navigation -->
- 
+ <?php
+include "header.php";
+?>
     
 
     <div class="container">
@@ -269,79 +259,30 @@ $attendanceResult = $conn->query($sql);
         <form method="POST" action="">
             <div class="form-group">
                 <label for="StudentName">Student Name:</label>
-                <input type="text" id="StudentName" name="name" placeholder="Student Name" required  ">
+                <input type="text" id="StudentName" name="StudentName" placeholder="Student Name" required value="<?php echo $StudentName; ?>" oninput="formatNumber(this)">
             </div>
-            <div class="input-group">
+        
             <label for="coursename">Course Name:</label>
-            <select id="category" name="course">
-              
+            <select id="category">
+                <option value="Accounting_ACFN24_C2L">Accounting_ACFN24_C2L</option>
                 <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C3L</option>
                 <option value="Accounting_ACFN24_C2L">Accounting_ACFN24_C4L</option>
                 <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C5L</option>
-                <option value="Accounting_ACFN24_C6L">Accounting_ACFN24_C6L</option>
-                <option value="Accounting_ACFNS24_C5L">Accounting_ACFNS24_C5L</option>
-                <option value="Nursing_CNA24_C4L">Nursing_CNA24_C4L</option>
-                <option value="Nursing_CNA24_C5L">Nursing_CNA24_C5L</option>
-                <option value="Nursing_CNA24_C6L">Nursing_CNA24_C6L</option>
-                <option value="Nursing_CNA24_C7L">Nursing_CNA24_C7L</option>
-
-                <option value="Digital Marketing_DMA24_C1L">Digital Marketing_DMA24_C1L</option>
-                <option value="Digital Marketing_DMA24_C2L">Digital Marketing_DMA24_C2L</option>
-                <option value="IT_IT24_C4L">IT_IT24_C4L</option> 
-                <option value="IT_IT24_C5L">IT_IT24_C5L</option> 
-                <option value="BM24_C1L">BM24_C1L</option> 
-                <option value="CB24_C4L">CB24_C4L</option>
-                <option value="CB24_C5L">CB24_C5L</option>
-
-                <option value="PLMB_C1L">PLMB24_C1L</option> 
-                <option value="PLMB_C2L">PLMB24_C2L</option> 
-
-                <option value="AM24_C1L">AM24_C1L</option>
-                <option value="AM24_C2L">AM24_C2L</option>
-
-                <option value="ENG24_A0-C1L">ENG24_A0-C1L</option>
-                <option value="ENG24_A0-C4L">ENG24_A1-C4L</option>
-                <option value="ENG24_A1-C5L">ENG24_A1-C5L</option>
-                <option value="ENG24_A1-C6L">ENG24_A1-C6L</option>
-                <option value="ENG24_A2-C4L">ENG24_A2-C4L</option>
-                <option value="ENG24_B1-C1L">ENG24_B1-C1L</option>
-                <option value="ENG24_B2-C1L">ENG24_B2-C1L</option>
-                <option value="IELTS24">IELTS</option>
-
-
-
-
-
-
-
             </select>
             </div>
             <div class="input-group">
             <label for="category">Reason:</label>
-            <select id="category" name="reason">
-                <option value="Notprovided">Not provided</option>
-                <option value="Sick">Sick</option>
-                <option value="Acknowledged">Acknowledged</option>
-                <option value="Busy">Busy</option>
-                <option value="Drop out">Drop Out</option>
-                <option value="Pending">pending</option>
-                <option value="Appointment">appointment</option>
-                <option value="Couldnot contact">couldnot contact</option>
-                <option value="Rain">Rain</option>
-                <option value="Payment">Payment</option>
-                <option value="Family issue">Family issue</option>
-                
+            <select id="category">
+                <option value="notprovided">Not provided</option>
+                <option value="sick">Sick</option>
+                <option value="acknowledged">Acknowledged</option>
             </select>
-           </div>
-
-           
+        </div>
             <div class="input-group">
             <input type="hidden" name="date" value="<?php echo $currentDate; ?>">
             <div class="form-actions">
-                <button type="submit">Submit</button>
+                <button type="submit">Add Expense</button>
             </div>
-    </div>
-
         </form>
     </div>
 
@@ -359,16 +300,15 @@ $attendanceResult = $conn->query($sql);
                     <th>Course</th>
                     <th>Reason</th>
                     <th>Date</th>
-                    <th>Manage</th>
                     
                 </tr>
             </thead>
             <tbody>
                 <?php
-                // Fetch attendanceResult from the database
+                // Fetch expenses from the database
                 $totalSum = 0;
-                if ($attendanceResult->num_rows > 0) {
-                    while ($row = $attendanceResult->fetch_assoc()) {
+                if ($expensesResult->num_rows > 0) {
+                    while ($row = $expensesResult->fetch_assoc()) {
                         
                                
                         echo "<tr>
@@ -387,7 +327,7 @@ $attendanceResult = $conn->query($sql);
                         // $totalSum += $row['expense']; // Summing up expenses
                     }
                 } else {
-                    echo "<tr><td colspan='5'>No attendanceResult found.</td></tr>";
+                    echo "<tr><td colspan='5'>No expenses found.</td></tr>";
                 }
                 ?>
             </tbody>
