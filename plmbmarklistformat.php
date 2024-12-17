@@ -154,35 +154,50 @@ $studentResult = $conn->query($sql);
 
     <div class="input-group-wrapper">
         <div class="input-group">
-            <label for="classwork">Classwork (10)</label>
-            <input type="number" id="classwork" min="0" max="10" oninput="calculateTotal()">
+            <label for="classwork1">Classwork 1 (10)</label>
+            <input type="number" id="classwork1" min="0" max="10" oninput="calculateTotal()">
         </div>
         <div class="input-group">
-            <label for="homework">Homework and Research (10)</label>
-            <input type="number" id="homework" min="0" max="10" oninput="calculateTotal()">
+            <label for="classwork2">Classwork 2 (10)</label>
+            <input type="number" id="classwork2" min="0" max="10" oninput="calculateTotal()">
         </div>
         
     </div>
 
     <div class="input-group-wrapper">
-      
+       
+      <div class="input-group">
+            <label for="homework1">Homework 1 (5)</label>
+            <input type="number" id="homework1" min="0" max="5" oninput="calculateTotal()">
+        </div>
         <div class="input-group">
-            <label for="exam">Examination (30)</label>
-            <input type="number" id="exam" min="0" max="30" oninput="calculateTotal()">
+            <label for="homework2">Homework 2 (5)</label>
+            <input type="number" id="homework2" min="0" max="5" oninput="calculateTotal()">
         </div>
     </div>
     <div class="input-group-wrapper">
-        <div class="input-group">
-            <label for="engine_practical">Engine Practical (25)</label>
-            <input type="number" id="engine_practical" min="0" max="25" oninput="calculateTotal()">
+       
+    <div class="input-group">
+            <label for="assignment1">Assignment 1 (10)</label>
+            <input type="number" id="assignment1" min="0" max="10" oninput="calculateTotal()">
         </div>
         <div class="input-group">
-            <label for="garage">Garage (25)</label>
-            <input type="number" id="garage" min="0" max="25" oninput="calculateTotal()">
+            <label for="assignment2">Assignment 2 (10)</label>
+            <input type="number" id="assignment2" min="0" max="10" oninput="calculateTotal()">
         </div>
-        
     </div>
-  
+    <div class="input-group-wrapper">
+       
+       <div class="input-group">
+               <label for="finalproject">Final Project (20)</label>
+               <input type="number" id="finalproject" min="0" max="20" oninput="calculateTotal()">
+           </div>
+           <div class="input-group">
+               <label for="finalexam">Final Exam (30)</label>
+               <input type="number" id="finalexam" min="0" max="30" oninput="calculateTotal()">
+           </div>
+       </div>
+   
 
     <div class="input-group-wrapper">
    
@@ -202,23 +217,23 @@ $studentResult = $conn->query($sql);
 <script>
     // Function to calculate total marks dynamically
     function calculateTotal() {
-        // const classwork1 = parseFloat(document.getElementById('classwork1').value) || 0;
-        // const classwork2 = parseFloat(document.getElementById('classwork2').value) || 0;
-        const classwork = parseFloat(document.getElementById('classwork').value) || 0;
-        const homework = parseFloat(document.getElementById('homework').value) || 0;
-        const exam = parseFloat(document.getElementById('exam').value) || 0;
-        // const Assignment2 = parseFloat(document.getElementById('Assignment2').value) || 0;
-        // const GroupAssignment = parseFloat(document.getElementById('GroupAssignment').value) || 0;
-        const engine_practical = parseFloat(document.getElementById('engine_practical').value) || 0;
-         const garage = parseFloat(document.getElementById('garage').value) || 0;
+        const classwork1 = parseFloat(document.getElementById('classwork1').value) || 0;
+        const classwork2 = parseFloat(document.getElementById('classwork2').value) || 0;
+        const homework1 = parseFloat(document.getElementById('homework1').value) || 0;
+        const homework2 = parseFloat(document.getElementById('homework2').value) || 0;
+        const Assignment1 = parseFloat(document.getElementById('assignment1').value) || 0;
+        const Assignment2 = parseFloat(document.getElementById('assignment2').value) || 0;
+        const finalproject = parseFloat(document.getElementById('finalproject').value) || 0;
+        const finalexam = parseFloat(document.getElementById('finalexam').value) || 0;
 
-        const total = classwork + homework + exam + engine_practical + garage;
+        const total = classwork1 + classwork2 + homework1 + homework2 + Assignment1 + Assignment2 + finalproject + finalexam;
 
         document.getElementById('total-display').value = total.toFixed(2);
     }
 
     // Function to submit marks via AJAX
     function submitMarks() {
+        
         const studentName = document.getElementById('studentName').value;
         const total = parseFloat(document.getElementById('total-display').value);
         const course = "<?php echo $course; ?>";
@@ -232,7 +247,7 @@ $studentResult = $conn->query($sql);
             alert("Student name is required!");
             return;
         }
-
+ 
         // Collect data to send
         const data = {
             classtablename:classtablename,
@@ -241,19 +256,21 @@ $studentResult = $conn->query($sql);
             course: course,
             classname: classname,
             term: term,
-            classwork: document.getElementById('classwork').value,
-            homework: document.getElementById('homework').value,
-            engine_practical: document.getElementById('engine_practical').value,
-            // Assignment2: document.getElementById('Assignment2').value,
-            garage: document.getElementById('garage').value,
+            classwork1: document.getElementById('classwork1').value,
+            classwork2: document.getElementById('classwork2').value,
+            homework1: document.getElementById('homework1').value,
+            homework2: document.getElementById('homework2').value,
+            Assignment1: document.getElementById('assignment1').value,
+            Assignment2: document.getElementById('assignment2').value,
+            finalproject: document.getElementById('finalproject').value,
             
-            exam: document.getElementById('exam').value,
+            finalexam: document.getElementById('finalexam').value,
             total: total,
         };
-
+        alert("till here");
         // AJAX POST request
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "ammarkinserter.php", true);
+        xhr.open("POST", "plmbmarkinserter.php", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {

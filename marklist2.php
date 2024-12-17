@@ -1,21 +1,6 @@
 <?php
-session_start();
-require "connection.php";
-if ($_SESSION['role']=='admin' ){
-    $sql = "SELECT DISTINCT courses FROM course_names";
-}
-elseif($_SESSION['role']=='office'){
-$sql = "SELECT DISTINCT courses FROM course_names";
-}
-else{
-    $courserole=$_SESSION['role'];
-    $sql = "SELECT DISTINCT courses FROM course_names where courses='$courserole'";
-}
-$result = $conn->query($sql);
-$courses = [];
-while ($row = $result->fetch_assoc()) {
-    $courses[] = $row['courses'];
-}
+include "rolefilter.php";
+
 
 // If filters are applied and data needs to be fetched
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {

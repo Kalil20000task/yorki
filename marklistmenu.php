@@ -1,17 +1,5 @@
 <?php
-session_start();
-require "connection.php";
-if ($_SESSION['role']=='admin' ){
-    $sql = "SELECT DISTINCT courses FROM course_names";
-}
-elseif($_SESSION['role']=='office'){
-$sql = "SELECT DISTINCT courses FROM course_names";
-}
-else{
-    $courserole=$_SESSION['role'];
-    $sql = "SELECT DISTINCT courses FROM course_names where courses='$courserole'";
-}
-$courseResult = $conn->query($sql);
+include "rolefilter.php";
 
 ?>
 
@@ -109,15 +97,10 @@ $courseResult = $conn->query($sql);
             <option value="">Select a course</option>
             <?php
             // Populate course dropdown
-            if ($courseResult->num_rows > 0) {
-                while ($row = $courseResult->fetch_assoc()) {
-                    $selected = isset($_POST['course']) && $_POST['course'] === $row['courses'] ? 'selected' : '';
-                    echo "<option value='" . $row['courses'] . "' $selected>" . $row['courses'] . "</option>";
-                }
-            } else {
-                echo "<option value=''>No courses available</option>";
-            }
-            ?>
+            foreach ($courses as $course): ?>
+                <option value="<?= htmlspecialchars($course) ?>"><?= htmlspecialchars($course) ?></option>
+            <?php endforeach; ?>
+            
         </select>
     </div>
 
@@ -287,10 +270,24 @@ $courseResult = $conn->query($sql);
                     
                     echo "<script>window.location.href='$url';</script>";
                     exit;        
-
-            case 'IT':
-                header('Location: it.php');
+            case 'PLMB24-1':  
+                $url = "plmbmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
                 exit;
+            case 'CNA24-1':
+            case 'CNA24-2':
+            case 'CNA24-3':
+                    $url = "cnamarklistformatterm1to3.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                     echo "<script>window.location.href='$url';</script>";
+                    exit;       
+            case 'CNA24-4':
+                $url = "cnamarklistformatterm4.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+               exit;
+            case 'CNA24-5':
+                $url = "cnamarklistformatterm5.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+               exit;
             default:
                 echo '<p style="color: red; text-align: center;">invalid course selection!</p>';
         }

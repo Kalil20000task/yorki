@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('Location: login.php'); // Redirect to login page if not logged in
+    exit();
+}
 require "connection.php";
 $sql = "SELECT DISTINCT courses FROM course_names";
 $courseResult = $conn->query($sql);

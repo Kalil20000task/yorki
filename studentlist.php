@@ -1,21 +1,14 @@
 <?php
-session_start();
-require "connection.php";
-if ($_SESSION['role']=='admin' ){
-    $sql = "SELECT DISTINCT courses FROM course_names";
-}
-elseif($_SESSION['role']=='office'){
-$sql = "SELECT DISTINCT courses FROM course_names";
-}
-else{
-    $courserole=$_SESSION['role'];
-    $sql = "SELECT DISTINCT courses FROM course_names where courses='$courserole'";
-}
-$result = $conn->query($sql);
-$courses = [];
-while ($row = $result->fetch_assoc()) {
-    $courses[] = $row['courses'];
-}
+// session_start();
+include "rolefilter.php";
+
+
+// Close the connection
+// $conn->close();
+
+
+
+
 
 // If filters are applied and data needs to be fetched
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
@@ -205,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
         <select id="courseFilter" name="course">
             <option value="">Select Course</option>
             <?php foreach ($courses as $course): ?>
-                <option value="<?= $course ?>"><?= $course ?></option>
+                <option value="<?= htmlspecialchars($course) ?>"><?= htmlspecialchars($course) ?></option>
             <?php endforeach; ?>
         </select>
 

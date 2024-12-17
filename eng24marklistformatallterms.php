@@ -171,12 +171,12 @@ if ($course && $classname && $level) {
             <label for="speakingskills">Speaking Skills (10)</label>
             <input type="number" id="speakingskills" min="0" max="10" oninput="calculateTotal()">
         </div>
-
-        
         <div class="input-group">
-            <label for="readingskills">Reading Skills (10)</label>
-            <input type="number" id="readingskills" min="0" max="10" oninput="calculateTotal()">
+            <label for="homework">Home Work (10)</label>
+            <input type="number" id="homework" min="0" max="10" oninput="calculateTotal()">
         </div>
+        
+       
     </div>
 
     <div class="input-group-wrapper">
@@ -185,16 +185,18 @@ if ($course && $classname && $level) {
             <input type="number" id="writingskills" min="0" max="10" oninput="calculateTotal()">
         </div>
         <div class="input-group">
-            <label for="listeningskills">Listening Skills (10)</label>
-            <input type="number" id="listeningskills" min="0" max="10" oninput="calculateTotal()">
+            <label for="participation">Class Participation (5)</label>
+            <input type="number" id="participation" min="0" max="5" oninput="calculateTotal()">
         </div>
+      
     </div>
 
     <div class="input-group-wrapper">
-        <div class="input-group">
-            <label for="groupAssignment1">Grammar Comprehension (25)</label>
-            <input type="number" id="grammarcomprehension" min="0" max="25" oninput="calculateTotal()">
+    <div class="input-group">
+            <label for="listeningskills">Listening Skills (10)</label>
+            <input type="number" id="listeningskills" min="0" max="10" oninput="calculateTotal()">
         </div>
+        
         <div class="input-group">
             <label for="panctuality">Panctuality (5)</label>
             <input type="number" id="panctuality" min="0" max="5" oninput="calculateTotal()">
@@ -203,13 +205,10 @@ if ($course && $classname && $level) {
 
     <div class="input-group-wrapper">
     <div class="input-group">
-            <label for="homework">Home Work (10)</label>
-            <input type="number" id="homework" min="0" max="10" oninput="calculateTotal()">
+            <label for="readingskills">Reading Skills (10)</label>
+            <input type="number" id="readingskills" min="0" max="10" oninput="calculateTotal()">
         </div>
-        <div class="input-group">
-            <label for="participation">Class Participation (5)</label>
-            <input type="number" id="participation" min="0" max="5" oninput="calculateTotal()">
-        </div>
+       
         <div class="input-group">
             <label for="attendance">Attendance (10)</label>
             <input type="number" id="attendance" min="0" max="10" oninput="calculateTotal()">
@@ -217,6 +216,11 @@ if ($course && $classname && $level) {
     </div>
 
     <div class="input-group-wrapper">
+    <div class="input-group">
+            <label for="groupAssignment1">Grammar Comprehension (25)</label>
+            <input type="number" id="grammarcomprehension" min="0" max="25" oninput="calculateTotal()">
+        </div>
+   
         <div class="input-group">
             <label for="discipline">Discipline (5)</label>
             <input type="number" id="discipline" min="0" max="5" oninput="calculateTotal()">

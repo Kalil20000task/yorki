@@ -160,7 +160,7 @@ if (session_status() == PHP_SESSION_NONE) {
             $role = $_SESSION['role'];
 
             // Admin role - show all links
-            if ($role == 'admin') {
+            if (in_array('admin', $role)) {
                 echo '<a href="attendance.php">Attendance</a>';
                 echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
@@ -171,7 +171,7 @@ if (session_status() == PHP_SESSION_NONE) {
             }
 
             // Manager role - show only some links
-            elseif ($role == 'office') {
+            if (in_array('office', $role)) {
                 echo '<a href="attendance.php">Attendance</a>';
                 echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
@@ -182,11 +182,13 @@ if (session_status() == PHP_SESSION_NONE) {
 
             // Other roles - show restricted links
             else {
+                if (!in_array('admin', $role)) {
                 echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
             }
         }
+    }
         ?>
 
         <a class="logout-button" href="logout.php">Logout</a>
