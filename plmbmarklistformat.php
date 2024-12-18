@@ -267,7 +267,7 @@ $studentResult = $conn->query($sql);
             finalexam: document.getElementById('finalexam').value,
             total: total,
         };
-        alert("till here");
+        // alert("till here");
         // AJAX POST request
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "plmbmarkinserter.php", true);

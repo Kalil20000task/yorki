@@ -1,6 +1,6 @@
 <?php
-// session_start();
 include "rolefilter.php";
+
 
 // If filters are applied and data needs to be fetched
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
@@ -9,8 +9,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     $levelFilter = $_POST['level'] ?? '';
 
     // Dynamically create table name
-    $batchname = "class" . $courseFilter . $levelFilter . "c" . $classFilter ;
-    $sql = "SELECT * FROM `$batchname`";  // Adjust this as per your actual schema
+    $batchname = "class" . $courseFilter . $levelFilter . "c" . $classFilter . "marklist";
+    // $sql = "SELECT distinct id,student_name,course_name,total FROM `$batchname`";  // Adjust this as per your actual schema
+    $sql="SELECT
+    id,
+    student_name,
+    course_name,
+    class,
+    MAX(CASE WHEN term = 1 THEN total END) AS Term1,
+    MAX(CASE WHEN term = 2 THEN total END) AS Term2,
+    MAX(CASE WHEN term = 3 THEN total END) AS Term3,
+    MAX(CASE WHEN term = 4 THEN total END) AS Term4,
+    MAX(CASE WHEN term = 5 THEN total END) AS Term5
+FROM 
+    `$batchname`
+GROUP BY 
+    student_name, course_name,class";
     $data = $conn->query($sql);
 }
 ?>
@@ -21,16 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marks List</title>
-    <!-- <script src="table_edit.js"></script> -->
-    <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap JavaScript (important for modal functionality) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Your custom JS -->
-<script src="table_edit.js"></script>
-
     <style>
         /* Your styling code */
         body {
@@ -60,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
         table, th, td {
             border: 1px solid #555;
         }
-        th, td, h2 {
+        th, td {
             padding: 10px;
             text-align: center;
             
@@ -168,29 +172,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
                 });
             }
         });
+        function exportTableToExcel(tableID, filename = '') {
+            let downloadLink;
+            let dataType = 'application/vnd.ms-excel';
+            let tableSelect = document.getElementById(tableID);
+            let tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+            
+            // Specify file name
+            filename = filename ? filename + '.xls' : 'excel_data.xls';
+            
+            // Create download link element
+            downloadLink = document.createElement("a");
+            
+            document.body.appendChild(downloadLink);
+            
+            if (navigator.msSaveOrOpenBlob) {
+                let blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Create a link to the file
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                
+                // Setting the file name
+                downloadLink.download = filename;
+                
+                // Trigger the function
+                downloadLink.click();
+            }
+        }
     </script>
-    <script>
-  initializeTableEdit('editModal', 'edit-btn', 'get_row.php', 'update_row.php');
-</script>
 </head>
 <body>
 <div class="container">
-    <div>
-        <h2><?php 
-        if(isset($_POST['course'])&& isset($_POST['class'])){
-            echo $batchname;
-        }
-        else{
-            echo "Select Batch";
-        }
-        
-        ?> </h2>
-    <div>
     <form method="POST" class="filter">
         <select id="courseFilter" name="course">
             <option value="">Select Course</option>
             <?php foreach ($courses as $course): ?>
-                <option value="<?= htmlspecialchars($course) ?>"><?= htmlspecialchars($course) ?></option>
+                <option value="<?= $course ?>"><?= $course ?></option>
             <?php endforeach; ?>
         </select>
 
@@ -199,53 +219,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
         </select>
 
         <select id="levelFilter" name="level">
-            <option value="">Select Level For English Course only</option>
+            <option value="">Select Level</option>
         </select>
 
         <button type="submit" name="filter">Filter</button>
     </form>
 
     <?php if (isset($data)): ?>
-        <table>
+        <table id="studentTable">
             <?php
+            $stmt = $conn->prepare("SELECT COUNT(terms) AS term_count FROM course_names WHERE courses = ? AND classes = ? AND level = ?");
+             $stmt->bind_param("sss", $courseFilter,$classFilter,$levelFilter);
+        
+        // Execute the query
+             $stmt->execute();
+             $result = $stmt->get_result();
+        
         if ($data->num_rows > 0) {
     // Fetch field names dynamically
-    $fields = $data->fetch_fields(); 
+    // $fields = $data->fetch_fields(); 
 
     echo "<thead><tr>";
-    foreach ($fields as $field) {
-        echo "<th>" . htmlspecialchars($field->name) . "</th>";
+    echo "<th> ID </th>";
+    echo "<th> Name </th>";
+    echo "<th> CourseName </th>";
+    echo "<th> Class </th>";
+    // echo "<th>" . htmlspecialchars($field->name) . "</th>";
+    $row = $result->fetch_assoc();
+    $termcount=$row["term_count"];
+    for ($i = 1; $i < $termcount+1; $i++) {
+        echo "<th> Term".$i. "</th>";
     }
-    echo "<th>Actions</th>";
+    echo "<th> Total </th>";
+    echo "<th> Average </th>";
+    // echo "<th> Rank </th>";
+    
     echo "</tr></thead>";
 
+
     echo "<tbody>";
-    while ($row = $data->fetch_assoc()) {
-        echo "<tr>";
-        foreach ($row as $value) {
-            echo "<td>" . htmlspecialchars($value) . "</td>";
+    
+    
+    // while ($row2 = $data->fetch_assoc()) {
+    //     $total=$total + $row2['total'];
+    // }
+    while ($row2 = $data->fetch_assoc()) {
+        //calculating the total sum of the term results
+        $total=0;
+        for ($i = 1; $i < $termcount+1; $i++) {
+            $total=$total+ $row2['Term'.$i];
         }
-        echo "<td>
-              <button class='btn btn-primary edit-btn' data-id='{$row['ID']}' data-table='$batchname'>Edit</button>
-            </td>";
+        echo "<tr>";
+        // foreach ($row as $value) {
+            echo "<td>" . $row2['id'] . "</td>";
+            echo "<td>" . $row2['student_name'] . "</td>";
+            echo "<td>" . $row2['course_name'] . "</td>";
+            echo "<td>" . $row2['class'] . "</td>";
+            for ($i = 1; $i < $termcount+1; $i++) {
+                echo "<td>" . $row2['Term'.$i] ."</td>";
+            }
+            echo "<td>" . $total . "</td>";
+            //callculating the average
+            echo "<td>" . $total/$termcount . "</td>";
+          
         echo "</tr>";
     }
+
     echo "</tbody>";
 } else {
     echo "<thead><tr><th colspan='100%'>No records found</th></tr></thead>";
     echo "<tbody><tr><td colspan='100%'>Please select both course and class.</td></tr></tbody>";
 }
-include 'edit_modal.php';
 
         ?>
     </tbody>
 </table>
 </container>
 
-        <form method="POST" action="export2.php">
-            <input type="hidden" name="batchname" class="export-btn" value="<?= $batchname ?>">
-            <button type="submit" class="export-btn2">Export to CSV</button>
-        </form>
+        <!-- <form method="POST" action="export2.php"> -->
+            <!-- <input type="hidden" name="batchname" class="export-btn" value="<?= $batchname ?>"> -->
+            <!-- <button type="submit" class="export-btn2">Export to CSV</button> -->
+            <button onclick="exportTableToExcel('studentTable', '<?php echo $batchname; ?>')" class="export-btn2" name="batchname">Export to Excel</button>
+
+        <!-- </form> -->
     <?php endif; ?>
 
 </body>

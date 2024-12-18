@@ -1,12 +1,12 @@
 <?php
 require "connection.php";
-$tablename = "tbl_users";
+$tablename = "users";
 
 if (isset($_POST['fullName'])) {
     $fullName = $_POST['fullName'];
     $username = $_POST['userName'];
     $password = $_POST['password'];
-    $role = $_POST['role'];
+    // $role = $_POST['role'];
 
     if (!empty($fullName)) {
         // Check if a user with the same username and password already exists
@@ -20,8 +20,8 @@ if (isset($_POST['fullName'])) {
             echo json_encode(["status" => "error", "message" => "Incorrect user configuration. User with the same username and password already exists."]);
         } else {
             // If no match is found, insert the new user
-            $stmt_insert = $conn->prepare("INSERT INTO $tablename (name, username, password, role) VALUES (?, ?, ?, ?)");
-            $stmt_insert->bind_param("ssss", $fullName, $username, $password, $role);
+            $stmt_insert = $conn->prepare("INSERT INTO $tablename (fullname, username, password) VALUES (?, ?, ?)");
+            $stmt_insert->bind_param("sss", $fullName, $username, $password);
 
             if ($stmt_insert->execute()) {
                 echo json_encode(["status" => "success", "message" => "Record inserted successfully!"]);

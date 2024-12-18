@@ -135,14 +135,14 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 <body>
     <!-- Drawer Navigation -->
-    <div id="drawer" class="drawer">
-        <span class="close-btn" onclick="closeDrawer()">&times;</span>
+    <!-- <div id="drawer" class="drawer"> -->
+        <!-- <span class="close-btn" onclick="closeDrawer()">&times;</span> -->
         <!-- <a href="index.php">Home</a>
         <a href="details.php">Details</a>
         <a href="attendance.php">Attendance</a> -->
         <!-- <a href="#" onclick="openSettingsModal()">Settings</a> -->
-        <a href="about.html">ብዛዕባና / About</a>
-    </div>
+        <!-- <a href="about.html">ብዛዕባና / About</a> -->
+    <!-- </div> -->
 
     <!-- Header Navigation -->
     <div class="header">
@@ -165,6 +165,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
+                echo '<a href="finalreport.php">Final Report</a>';
                 echo '<a href="register_student.php">Register Student</a>';
                 echo '<a href="register_staffs.php">Register Staff</a>';
               
@@ -176,6 +177,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
+                echo '<a href="finalreport.php">Final Report</a>';
+
                 echo '<a href="register_student.php">Register Student</a>';
               
             }
@@ -186,6 +189,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
+                echo '<a href="finalreport.php">Final Report</a>';
+
             }
         }
     }
