@@ -4,7 +4,8 @@ include 'connection.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $id = $_POST['id'];
   $table = $_POST['table'];
-  
+   echo $id;
+   echo $table;
 
   $fields = [];
   $values = [];

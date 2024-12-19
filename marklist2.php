@@ -21,6 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marks List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JavaScript (important for modal functionality) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your custom JS -->
+<script src="table_edit.js"></script>
+
     <style>
         /* Your styling code */
         body {
@@ -159,6 +167,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
             }
         });
     </script>
+    <script>
+  initializeTableEdit('editModal', 'edit-btn', 'get_row.php', 'update_row.php');
+</script>
 </head>
 <body>
 <div class="container">
@@ -192,6 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     foreach ($fields as $field) {
         echo "<th>" . htmlspecialchars($field->name) . "</th>";
     }
+    echo "<th>Actions</th>";
     echo "</tr></thead>";
 
     echo "<tbody>";
@@ -200,6 +212,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
         foreach ($row as $value) {
             echo "<td>" . htmlspecialchars($value) . "</td>";
         }
+        echo "<td>
+        <button class='btn btn-primary edit-btn' data-id='{$row['id']}' data-table='$batchname'>Edit</button>
+      </td>";
         echo "</tr>";
     }
     echo "</tbody>";
@@ -207,6 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     echo "<thead><tr><th colspan='100%'>No records found</th></tr></thead>";
     echo "<tbody><tr><td colspan='100%'>Please select both course and class.</td></tr></tbody>";
 }
+include 'edit_modal.php';
 
         ?>
     </tbody>
