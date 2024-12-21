@@ -25,9 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
 
 <!-- Bootstrap JavaScript (important for modal functionality) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Your custom JS -->
-<script src="table_edit.js"></script>
+
 
     <style>
         /* Your styling code */
@@ -167,9 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
             }
         });
     </script>
-    <script>
-  initializeTableEdit('editModal', 'edit-btn', 'get_row.php', 'update_row.php');
-</script>
+    
 </head>
 <body>
 <div class="container">
@@ -192,8 +191,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
         <button type="submit" name="filter">Filter</button>
     </form>
 
+        <!-- Modal Dialog -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Row</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div id="editFields">
+                            <!-- Dynamic form fields go here -->
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table id="tabledata">
     <?php if (isset($data)): ?>
-        <table>
+       
             <?php
         if ($data->num_rows > 0) {
     // Fetch field names dynamically
@@ -213,7 +234,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
             echo "<td>" . htmlspecialchars($value) . "</td>";
         }
         echo "<td>
-        <button class='btn btn-primary edit-btn' data-id='{$row['id']}' data-table='$batchname'>Edit</button>
+        <button class='btn btn-primary editBtn' data-id='{$row['id']}'>Edit</button>
+        
       </td>";
         echo "</tr>";
     }
@@ -222,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     echo "<thead><tr><th colspan='100%'>No records found</th></tr></thead>";
     echo "<tbody><tr><td colspan='100%'>Please select both course and class.</td></tr></tbody>";
 }
-include 'edit_modal.php';
+
 
         ?>
     </tbody>
@@ -236,4 +258,62 @@ include 'edit_modal.php';
     <?php endif; ?>
 
 </body>
+
+<script>
+    // ajax to handel edit functionality
+    $(document).ready(function () {
+        $(document).on('click', '.editBtn', function () {
+            const batchname = "<?php echo $batchname; ?>";
+
+            const id = $(this).data('id');
+            // const batchname = $('#batchname').val();
+            $.ajax({
+                url: 'fetch_row.php',
+                type: 'POST',
+                data: { id, batchname },
+                success: function (data) {
+                    $('#editFields').html(data);
+                    $('#editModal').modal('show');
+
+                    // Recalculate total dynamically
+                    $('#edit_mark1, #edit_mark2').on('input', function () {
+                        const mark1 = parseFloat($('#edit_mark1').val()) || 0;
+                        const mark2 = parseFloat($('#edit_mark2').val()) || 0;
+                        const total = mark1 + mark2;
+                        $('#edit_total').val(total); // Update total field
+                    });
+                },
+            });
+        });
+
+    $('#editForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = $(this).serialize();
+    const batchname = "<?php echo $batchname; ?>";
+    $.ajax({
+        url: 'update_row.php',
+        type: 'POST',
+        data: {
+            formData: formData,
+            batchname: batchname,
+        },
+        success: function (response) {
+            if (response.status === 'success') {
+                alert(response.message); // Display success message
+                $('#editModal').modal('hide');
+                location.reload(); // Refresh table data
+            } else {
+                alert('Error: ' + response.message); // Display error message
+            }
+        },
+        error: function (xhr, status, error) {
+            alert('AJAX Error: ' + error); // Handle AJAX errors
+        },
+    });
+});
+
+
+    });
+</script>
 </html>
