@@ -27,9 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
 
 <!-- Bootstrap JavaScript (important for modal functionality) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Your custom JS -->
-<script src="table_edit.js"></script>
+
 
     <style>
         /* Your styling code */
@@ -115,8 +116,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
             border-radius: 5px;
             margin-bottom: 20px;
         }
+
+        .modal-content {
+    background: rgba(49, 47, 47); /* Dark background with transparency */
+    color: #fff; /* White text */
+    border-radius: 8px; /* Rounded corners for a cohesive look */
+    border: 1px solid #555; /* Match table border color */
+}
+
+.modal-header {
+    background-color: #555; /* Dark header background */
+    color: #fff; /* White text */
+    border-bottom: 1px solid #444; /* Match table header border */
+}
+
+.modal-title {
+    font-size: 18px; /* Adjust font size */
+    font-weight: bold;
+}
+
+.modal-body {
+    background-color: rgba(54, 53, 53, 0.7); /* Match container background */
+    color: #fff; /* White text */
+}
+
+.modal-footer {
+    background-color: rgba(0, 0, 0, 0.7); /* Match container background */
+    border-top: 1px solid #444; /* Match table border */
+}
+
+.close {
+    color: #fff; /* White close button */
+    opacity: 0.8;
+}
+
+.close:hover {
+    color: #ff0000; /* Highlight close button on hover */
+    opacity: 1;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Match filter button color */
+    border-color: #0056b3;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #003d82;
+}
+
     </style>
-    <?php include "header.php"; ?>
+   
 </head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -169,9 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
             }
         });
     </script>
-    <script>
-  initializeTableEdit('editModal', 'edit-btn', 'get_row.php', 'update_row.php');
-</script>
+    
 </head>
 <body>
 <div class="container">
@@ -204,6 +252,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
 
         <button type="submit" name="filter">Filter</button>
     </form>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Row</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="border: none; background: transparent; color: #007bff; font-size: 1.5rem; padding: 0.5rem 1rem;">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+             
+
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div id="editFields">
+                            <!-- Dynamic form fields go here -->
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php if (isset($data)): ?>
         <table>
@@ -226,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
             echo "<td>" . htmlspecialchars($value) . "</td>";
         }
         echo "<td>
-              <button class='btn btn-primary edit-btn' data-id='{$row['ID']}' data-table='$batchname'>Edit</button>
+              <button class='btn btn-primary editbtn' data-id='{$row['ID']}' data-table='$batchname'>Edit</button>
             </td>";
         echo "</tr>";
     }
@@ -249,4 +319,59 @@ include 'edit_modal.php';
     <?php endif; ?>
 
 </body>
+<script>
+    // ajax to handel edit functionality
+    $(document).ready(function () {
+        $(document).on('click', '.editbtn', function () {
+            const batchname = "<?php echo $batchname; ?>";
+
+            const id = $(this).data('id');
+            // alert(id);
+            // const batchname = $('#batchname').val();
+            $.ajax({
+                url: 'fetchstudent_row.php',
+                type: 'POST',
+                data: { id, batchname },
+                success: function (data) {
+                    $('#editFields').html(data);
+                    $('#editModal').modal('show');
+
+                },
+            });
+        });
+        $('#editForm').on('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const formData = $(this).serialize(); // Serialize form data
+    const batchname = "<?php echo $batchname; ?>"; // Ensure this is properly set
+
+    $.ajax({
+        url: 'updatestudent_row.php',
+        type: 'POST',
+        data: formData + '&batchname=' + batchname, // Append batchname to formData
+        success: function (response) {
+            try {
+                const res = JSON.parse(response); // Parse JSON response
+                if (res.status === 'success') {
+                    alert(res.message); // Display success message
+                    $('#editModal').modal('hide');
+                    location.reload(); // Refresh table data
+                } else {
+                    alert('Error: ' + res.message); // Display error message
+                }
+            } catch (e) {
+                alert('Invalid response from server');
+                console.error(response); // Log response for debugging
+            }
+        },
+        error: function (xhr, status, error) {
+            alert('AJAX Error: ' + status); // Handle AJAX errors
+        },
+    });
+});
+
+
+
+    });
+</script>
 </html>
