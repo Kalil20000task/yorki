@@ -91,6 +91,31 @@ $courseResult = $conn->query($sql);
         button:hover {
             opacity: 0.9;
         }
+
+        .roles-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px;
+}
+
+.role-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    width: 100%;
+}
+
+.role-row label {
+    width: calc(25% - 10px); /* 4 roles per row */
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
     </style>
 </head>
 <body>
@@ -112,39 +137,44 @@ $courseResult = $conn->query($sql);
                 <label for="passwword">Password</label>
                 <input type="password" name="password" id="password" placeholder="Enter user's name" required>
              </div>
-            <div class="input-group">
+            <!-- <div class="input-group"> -->
             <label for="course">Role:</label>
-            <select id="role" name="role" required>
-            <!-- <option value="">Select a role</option> -->
-            <option value="office">Office</option>
-            <option value="admin">Admin</option>
-          
+            <div class="roles-container">
+    <!-- Static roles options -->
 
-            <!-- <option value="">Select a course</option> -->
+    <!-- Dynamic course options from database -->
+     <div class='role-row'>
+     <label>
+            <input type="checkbox" name="roles[]" value="office"> Office
+        </label>
+        <label>
+            <input type="checkbox" name="roles[]" value="admin"> Admin
+        </label>
+    <?php
 
+//here u have no worries if new roles are not included in the checkbox lists, as the 
+//roles are fetched dynaically from courses table which is inturn updated when a new course is added.
 
-             <?php
-             if ($courseResult->num_rows > 0) {
-                   // Loop through the result set
-                   while ($row = $courseResult->fetch_assoc()) {
-                   // Use the course name as both the value and the text displayed in the option
-                   echo "<option value='" . $row["courses"] . "'>"?> <?php echo $row['courses'];?> <?php "</option>";
-                  }
-             } else {
-                   echo "<option value=''>No courses available</option>";
-                }
-                ?>
-            </select>
-
-
+    if ($courseResult->num_rows > 0) {
+        $count = 2; // Initialize a counter for each row
+        // Loop through the result set and generate checkboxes for each course
+        while ($row = $courseResult->fetch_assoc()) {
+            // Start a new row after every 4 checkboxes
+            if ($count % 4 == 0 && $count > 2) {
+                echo "</div><div class='role-row'>"; // Close and open a new row
+            }
+            echo "<label>";
+            echo "<input type='checkbox' name='roles[]' value='" . $row["courses"] . "'> " . $row['courses'];
+            echo "</label>";
+            $count++;
+        }
+    } else {
+        echo "<label>No courses available</label>";
+    }
+    ?>
 
             </div>
-
-            <!-- <div class="input-group">
-                    <label for="term">Class :</label>
-                    <input type="number" min=0 max=20 name="class" id="class" >
-            </div> -->
-           
+            </div>
            
            
             <div class="input-group">
@@ -169,6 +199,7 @@ $courseResult = $conn->query($sql);
                 .then(data => {
                     if (data.status === "success") {
                         alert(data.message); // Success message
+                        location.reload();
                     } else {
                         alert("Error: " + data.message); // Error message
                     }
