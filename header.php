@@ -4,7 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,6 +78,12 @@ if (session_status() == PHP_SESSION_NONE) {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
+        .header .username {
+            margin-left: 20px;
+            font-size: 16px;
+            color: #fff;
+        }
+
         .drawer {
             height: 100%;
             width: 0;
@@ -134,27 +139,22 @@ if (session_status() == PHP_SESSION_NONE) {
     </style>
 </head>
 <body>
-    <!-- Drawer Navigation -->
-    <!-- <div id="drawer" class="drawer"> -->
-        <!-- <span class="close-btn" onclick="closeDrawer()">&times;</span> -->
-        <!-- <a href="index.php">Home</a>
-        <a href="details.php">Details</a>
-        <a href="attendance.php">Attendance</a> -->
-        <!-- <a href="#" onclick="openSettingsModal()">Settings</a> -->
-        <!-- <a href="about.html">ብዛዕባና / About</a> -->
-    <!-- </div> -->
-
     <!-- Header Navigation -->
     <div class="header">
         <span class="menu-icon" onclick="openDrawer()">&#9776;</span>
-        <div class="title">
-            <h2>TrainUp Student Sytem</h2>
-        </div>
-        
-        <!-- <a href="index.php">Home</a> -->
-
         <?php
-        // session_start();
+        if (isset($_SESSION['username'])) {
+            echo '<div class="username">Welcome, ' . htmlspecialchars($_SESSION['username']) . '</div>';
+        }
+        ?>
+
+        <div class="title">
+            <h2>TrainUp Student System</h2>
+        </div>
+
+        <!-- Display session username -->
+        
+        <?php
         // Check user role and display links accordingly
         if (isset($_SESSION['role'])) {
             $role = $_SESSION['role'];
@@ -168,7 +168,6 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo '<a href="finalreport.php">Final Report</a>';
                 echo '<a href="register_student.php">Register Student</a>';
                 echo '<a href="register_staffs.php">Register Staff</a>';
-              
             }
 
             // Manager role - show only some links
@@ -178,22 +177,19 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo '<a href="studentlist.php">Students</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
                 echo '<a href="finalreport.php">Final Report</a>';
-
                 echo '<a href="register_student.php">Register Student</a>';
-              
             }
 
             // Other roles - show restricted links
             else {
                 if (!in_array('admin', $role)) {
-                echo '<a href="marklistmenu.php">Add Mark</a>';
-                echo '<a href="studentlist.php">Students</a>';
-                echo '<a href="marklist2.php">Mark List</a>';
-                echo '<a href="finalreport.php">Final Report</a>';
-
+                    echo '<a href="marklistmenu.php">Add Mark</a>';
+                    echo '<a href="studentlist.php">Students</a>';
+                    echo '<a href="marklist2.php">Mark List</a>';
+                    echo '<a href="finalreport.php">Final Report</a>';
+                }
             }
         }
-    }
         ?>
 
         <a class="logout-button" href="logout.php">Logout</a>

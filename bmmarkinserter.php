@@ -53,12 +53,12 @@ if (isset($data['studentName'])) {
             class VARCHAR(255) NOT NULL,
             term VARCHAR(100) NOT NULL,
           
-            test1 INT DEFAULT 0,
-            test2 INT DEFAULT 0,
-            businessplanassignment INT DEFAULT 0,
+            test1 DECIMAL(10,1) DEFAULT 0,
+            test2  DECIMAL(10,1) DEFAULT 0,
+            businessplanassignment DECIMAL(10,1) DEFAULT 0,
             
-            finalexam INT DEFAULT 0,
-            total INT DEFAULT 0,
+            finalexam DECIMAL(10,1) DEFAULT 0,
+            total DECIMAL(10,1) DEFAULT 0,
             date DATE NOT NULL,
             UNIQUE(student_name, term)
         )";

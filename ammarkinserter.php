@@ -49,18 +49,18 @@ if (isset($data['studentName'])) {
             id INT AUTO_INCREMENT PRIMARY KEY,
             student_name VARCHAR(100) NOT NULL,
             course_name VARCHAR(255) NOT NULL,
-            level VARCHAR(255) NOT NULL,
+           
             class VARCHAR(255) NOT NULL,
             term VARCHAR(100) NOT NULL,
           
-            classwork INT DEFAULT 0,
-            homework INT DEFAULT 0,
-            exam INT DEFAULT 0,
-            engine_practical INT DEFAULT 0,
-            garage INT DEFAULT 0,
+            classwork DECIMAL(10,1) DEFAULT 0,
+            homework DECIMAL(10,1) DEFAULT 0,
+            exam DECIMAL(10,1) DEFAULT 0,
+            engine_practical DECIMAL(10,1) DEFAULT 0,
+            garage DECIMAL(10,1) DEFAULT 0,
             
             
-            total INT DEFAULT 0,
+            total DECIMAL(10,1) DEFAULT 0,
             date DATE NOT NULL,
             UNIQUE(student_name, term)
         )";
@@ -75,9 +75,9 @@ if (isset($data['studentName'])) {
 
     // Insert data into the table
     $insertQuery = "INSERT INTO `$classtablename`
-                    (student_name, course_name, level, class, term, classwork, homework, exam, engine_practical, garage,  total, date) 
+                    (student_name, course_name, class, term, classwork, homework, exam, engine_practical, garage,  total, date) 
                     VALUES 
-                    ('$studentName', '$course','$level','$classname', '$term', '$classwork', '$homework', '$exam', '$engine_practical', '$garage', '$total', '$currentDate')";
+                    ('$studentName', '$course','$classname', '$term', '$classwork', '$homework', '$exam', '$engine_practical', '$garage', '$total', '$currentDate')";
 if ($conn->query($insertQuery) === TRUE) {
     echo "New record created successfully.";
 } else {

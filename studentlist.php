@@ -222,6 +222,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     
 </head>
 <body>
+<?php include "header.php"; ?>
+
 <div class="container">
     <div>
         <h2><?php 
@@ -286,7 +288,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     foreach ($fields as $field) {
         echo "<th>" . htmlspecialchars($field->name) . "</th>";
     }
-    echo "<th>Actions</th>";
+    echo "<th>Edit</th>";
+    echo "<th>Delete</th>";
     echo "</tr></thead>";
 
     echo "<tbody>";
@@ -298,6 +301,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
         echo "<td>
               <button class='btn btn-primary editbtn' data-id='{$row['ID']}' data-table='$batchname'>Edit</button>
             </td>";
+        echo "<td>
+            <button class='btn btn-danger deletebtn' data-id='{$row['ID']}' data-table='$batchname'>Delete</button>
+          </td>";
+       
         echo "</tr>";
     }
     echo "</tbody>";
@@ -369,6 +376,37 @@ include 'edit_modal.php';
         },
     });
 });
+$(document).on('click', '.deletebtn', function () {
+    const batchname = "<?php echo $batchname; ?>";
+    const id = $(this).data('id');
+
+    // Ask the user for confirmation before deleting
+    const confirmDelete = confirm("Are you sure you want to delete this student?");
+
+    if (confirmDelete) {
+        // Proceed with the deletion if "Yes"
+        $.ajax({
+            url: 'deletstudent_row.php',
+            type: 'POST',
+            data: { id, batchname },
+            success: function (data) {
+                // You can modify this line to display a success message
+                alert("The student record has been deleted successfully.");
+
+                // Optionally, you can reload or update the UI if necessary
+               location.reload();
+            },
+            error: function () {
+                // Handle errors if any
+                alert("There was an error deleting the record. Please try again.");
+            }
+        });
+    } else {
+        // If "No" is clicked, nothing happens
+        return false;
+    }
+});
+
 
 
 

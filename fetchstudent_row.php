@@ -9,7 +9,6 @@ if (isset($_POST['id']) && isset($_POST['batchname'])) {
 
     // Query to fetch data for the specific ID and batchname
     $sql = "SELECT * FROM $batchname WHERE id = $id";
-   
 
     $result = $conn->query($sql);
 
@@ -18,40 +17,38 @@ if (isset($_POST['id']) && isset($_POST['batchname'])) {
 
         // Generate HTML for the modal dialog
         echo '<form id="editForm">';
-        
 
         echo '<div class="form-group">';
         echo '<label for="ID">ID</label>';
         echo '<input type="number" class="form-control" id="ID" name="ID" value="' . htmlspecialchars($row['ID']) . '" required>';
         echo '</div>';
+
         echo '<div class="form-group">';
-        echo '<label for="edit_name">Name</label>';
+        echo '<label for="studentname">Name</label>';
         echo '<input type="text" class="form-control" id="studentname" name="studentname" value="' . htmlspecialchars($row['studentname']) . '" required>';
         echo '</div>';
 
         echo '<div class="form-group">';
         echo '<label for="coursename">Course Name</label>';
-        echo '<input type="text" class="form-control" id="coursename" name="coursename" value="' . htmlspecialchars($row['coursename']) . '" required>';
+        echo '<input type="text" class="form-control" id="coursename" name="coursename" value="' . htmlspecialchars($row['coursename']) . '" readonly>';
         echo '</div>';
 
         echo '<div class="form-group">';
-        echo '<label for="classname"> Class name</label>';
-        echo '<input type="text" class="form-control" id="classname" name="classname" value="' . htmlspecialchars($row['classname']) ;
+        echo '<label for="classname">Class Name</label>';
+        echo '<input type="text" class="form-control" id="classname" name="classname" value="' . htmlspecialchars($row['classname']) . '" readonly>';
         echo '</div>';
 
         echo '<div class="form-group">';
-        echo '<label for="levelname"> Level name</label>';
+        echo '<label for="levelname">Level Name</label>';
         echo '<input type="number" class="form-control" id="levelname" name="levelname" value="' . htmlspecialchars($row['levelname']) . '" readonly>';
         echo '</div>';
 
-        
         echo '</form>';
     } else {
         echo '<p>No record found.</p>';
     }
 
-    // Close the statement and connection
-    // $stmt->close();
+    // Close the connection
     $conn->close();
 } else {
     echo '<p>Invalid request.</p>';

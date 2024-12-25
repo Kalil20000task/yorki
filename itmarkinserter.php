@@ -54,16 +54,16 @@ if (isset($data['studentName'])) {
             class VARCHAR(255) NOT NULL,
             term VARCHAR(100) NOT NULL,
           
-            homework1 INT DEFAULT 0,
-            homework2 INT DEFAULT 0,
-            homework3 INT DEFAULT 0,
-            homework4 INT DEFAULT 0,
-            quiz INT DEFAULT 0,
-            attendance INT DEFAULT 0,
+            homework1 DECIMAL(10,1) DEFAULT 0,
+            homework2 DECIMAL(10,1) DEFAULT 0,
+            homework3 DECIMAL(10,1) DEFAULT 0,
+            homework4 DECIMAL(10,1) DEFAULT 0,
+            quiz DECIMAL(10,1) DEFAULT 0,
+            attendance DECIMAL(10,1) DEFAULT 0,
             
-            finalexam INT DEFAULT 0,
-            finalproject INT DEFAULT 0,
-            total INT DEFAULT 0,
+            finalexam DECIMAL(10,1) DEFAULT 0,
+            finalproject DECIMAL(10,1) DEFAULT 0,
+            total DECIMAL(10,1) DEFAULT 0,
             date DATE NOT NULL,
             UNIQUE(student_name, term)
         )";

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 23, 2024 at 11:47 AM
+-- Generation Time: Dec 25, 2024 at 12:11 PM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -316,10 +316,6 @@ CREATE TABLE IF NOT EXISTS `classacfns24c5` (
 --
 
 INSERT INTO `classacfns24c5` (`ID`, `studentname`, `coursename`, `classname`, `levelname`) VALUES
-(1, 'kaleabteame', 'ACFNs24', 5, '0'),
-(2, 'kali', 'ACFNs24', 5, '0'),
-(3, 'kali', 'ACFNs24', 5, '0'),
-(4, 'kill', 'ACFNs24', 5, ''),
 (5, 'Rahel Yirgalem', 'ACFNs24', 5, ''),
 (6, 'Nazriet Kflom', 'ACFNs24', 5, ''),
 (7, 'Nardos Mengis', 'ACFNs24', 5, ''),
@@ -338,16 +334,16 @@ CREATE TABLE IF NOT EXISTS `classacfns24c5marklist` (
   `course_name` varchar(178) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `class` int NOT NULL,
   `term` varchar(100) DEFAULT NULL,
-  `classwork1` int NOT NULL,
-  `classwork2` int NOT NULL,
-  `test1` int NOT NULL,
-  `test2` int NOT NULL,
-  `group_assignment1` int NOT NULL,
-  `group_assignment2` int NOT NULL,
-  `participation` int NOT NULL,
-  `attendance` int NOT NULL,
-  `final_exam` int NOT NULL,
-  `total` int NOT NULL,
+  `classwork1` decimal(10,1) NOT NULL,
+  `classwork2` decimal(10,1) NOT NULL,
+  `test1` decimal(10,1) NOT NULL,
+  `test2` decimal(10,1) NOT NULL,
+  `group_assignment1` decimal(10,1) NOT NULL,
+  `group_assignment2` decimal(10,1) NOT NULL,
+  `participation` decimal(10,1) NOT NULL,
+  `attendance` decimal(10,1) NOT NULL,
+  `final_exam` decimal(10,1) NOT NULL,
+  `total` decimal(10,1) NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_student_term` (`student_name`,`term`)
@@ -358,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `classacfns24c5marklist` (
 --
 
 INSERT INTO `classacfns24c5marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `classwork1`, `classwork2`, `test1`, `test2`, `group_assignment1`, `group_assignment2`, `participation`, `attendance`, `final_exam`, `total`, `date`) VALUES
-(57, 'Nardos Mengis', 'ACFNs24', 5, '1', 7, 0, 0, 0, 0, 0, 0, 0, 0, 7, '2024-12-13');
+(57, 'Nardos Mengis', 'ACFNs24', 5, '1', 7.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 7.0, '2024-12-13');
 
 -- --------------------------------------------------------
 
@@ -429,23 +425,25 @@ CREATE TABLE IF NOT EXISTS `classam24c1marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `classwork` int DEFAULT '0',
-  `homework` int DEFAULT '0',
-  `exam` int DEFAULT '0',
-  `engine_practical` int DEFAULT '0',
-  `garage` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `classwork` decimal(10,1) DEFAULT '0.0',
+  `homework` decimal(10,1) DEFAULT '0.0',
+  `exam` decimal(10,1) DEFAULT '0.0',
+  `engine_practical` decimal(10,1) DEFAULT '0.0',
+  `garage` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `classam24c1marklist`
 --
 
 INSERT INTO `classam24c1marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `classwork`, `homework`, `exam`, `engine_practical`, `garage`, `total`, `date`) VALUES
-(1, 'task', 'AM24', '1', '1', 8, 0, 0, 0, 0, 8, '2024-12-10');
+(1, 'task', 'AM24', '1', '1', 8.0, 0.0, 0.0, 0.0, 0.0, 8.0, '2024-12-10'),
+(2, 'Siem Hagos', 'AM24', '1', '1', 3.0, 0.0, 0.0, 0.0, 0.0, 3.0, '2024-12-25'),
+(3, 'Muluezghi Hagos', 'AM24', '1', '1', 3.0, 0.0, 0.0, 0.0, 6.2, 9.2, '2024-12-25');
 
 -- --------------------------------------------------------
 
@@ -484,7 +482,7 @@ CREATE TABLE IF NOT EXISTS `classbm24c1` (
 --
 
 INSERT INTO `classbm24c1` (`ID`, `studentname`, `coursename`, `classname`, `levelname`) VALUES
-(1, 'task', 'bm24', 1, '0');
+(1, 'tasks', 'bm24', 1, '0');
 
 -- --------------------------------------------------------
 
@@ -499,11 +497,11 @@ CREATE TABLE IF NOT EXISTS `classbm24c1marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `test1` int DEFAULT '0',
-  `test2` int DEFAULT '0',
-  `businessplanassignment` int DEFAULT '0',
-  `finalexam` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `test1` decimal(10,1) DEFAULT '0.0',
+  `test2` decimal(10,1) DEFAULT '0.0',
+  `businessplanassignment` decimal(10,1) DEFAULT '0.0',
+  `finalexam` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -514,7 +512,7 @@ CREATE TABLE IF NOT EXISTS `classbm24c1marklist` (
 --
 
 INSERT INTO `classbm24c1marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `test1`, `test2`, `businessplanassignment`, `finalexam`, `total`, `date`) VALUES
-(1, 'task', 'BM24', '1', '1', 30, 20, 24, 25, 99, '2024-12-09');
+(1, 'task', 'BM24', '1', '1', 30.0, 20.0, 25.0, 25.0, 100.0, '2024-12-09');
 
 -- --------------------------------------------------------
 
@@ -584,14 +582,14 @@ CREATE TABLE IF NOT EXISTS `classcb24c4marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `homework1` int DEFAULT '0',
-  `homework2` int DEFAULT '0',
-  `homework3` int DEFAULT '0',
-  `homework4` int DEFAULT '0',
-  `quiz` int DEFAULT '0',
-  `attendance` int DEFAULT '0',
-  `finalexam` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `homework1` decimal(10,1) DEFAULT '0.0',
+  `homework2` decimal(10,1) DEFAULT '0.0',
+  `homework3` decimal(10,1) DEFAULT '0.0',
+  `homework4` decimal(10,1) DEFAULT '0.0',
+  `quiz` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `finalexam` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -602,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `classcb24c4marklist` (
 --
 
 INSERT INTO `classcb24c4marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `homework1`, `homework2`, `homework3`, `homework4`, `quiz`, `attendance`, `finalexam`, `total`, `date`) VALUES
-(1, 'trial', 'CB24', '4', '1', 9, 9, 9, 9, 19, 9, 29, 93, '2024-12-10');
+(1, 'trial', 'CB24', '4', '1', 9.0, 9.0, 9.0, 9.0, 19.0, 9.0, 29.0, 0.0, '2024-12-10');
 
 -- --------------------------------------------------------
 
@@ -678,15 +676,15 @@ CREATE TABLE IF NOT EXISTS `classcna24c4marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `test1` float DEFAULT '0',
-  `test2` float DEFAULT '0',
-  `Assignment1` float DEFAULT '0',
-  `Assignment2` float DEFAULT '0',
-  `Assignment3` float DEFAULT '0',
-  `Assignment4` float DEFAULT '0',
-  `Assignment5` float DEFAULT '0',
-  `groupdiscussion` float DEFAULT '0',
-  `total` float DEFAULT '0',
+  `test1` decimal(10,1) DEFAULT '0.0',
+  `test2` decimal(10,1) DEFAULT '0.0',
+  `Assignment1` decimal(10,1) DEFAULT '0.0',
+  `Assignment2` decimal(10,1) DEFAULT '0.0',
+  `Assignment3` decimal(10,1) DEFAULT '0.0',
+  `Assignment4` decimal(10,1) DEFAULT '0.0',
+  `Assignment5` decimal(10,1) DEFAULT '0.0',
+  `groupdiscussion` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -738,14 +736,14 @@ CREATE TABLE IF NOT EXISTS `classcna24c5marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `test1` float DEFAULT '0',
-  `Assignment1` float DEFAULT '0',
-  `Assignment2` float DEFAULT '0',
-  `Assignment3` float DEFAULT '0',
-  `Assignment4` float DEFAULT '0',
-  `Assignment5` float DEFAULT '0',
-  `groupdiscussion` float DEFAULT '0',
-  `total` float DEFAULT '0',
+  `test1` decimal(10,1) DEFAULT '0.0',
+  `Assignment1` decimal(10,1) DEFAULT '0.0',
+  `Assignment2` decimal(10,1) DEFAULT '0.0',
+  `Assignment3` decimal(10,1) DEFAULT '0.0',
+  `Assignment4` decimal(10,1) DEFAULT '0.0',
+  `Assignment5` decimal(10,1) DEFAULT '0.0',
+  `groupdiscussion` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -795,15 +793,15 @@ CREATE TABLE IF NOT EXISTS `classcna24c6marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `finalproject` float DEFAULT '0',
-  `practical` float DEFAULT '0',
-  `Assignment1` float DEFAULT '0',
-  `Assignment2` float DEFAULT '0',
-  `Assignment3` float DEFAULT '0',
-  `Assignment4` float DEFAULT '0',
-  `Assignment5` float DEFAULT '0',
-  `attendance` float DEFAULT '0',
-  `total` float DEFAULT '0',
+  `finalproject` decimal(10,1) DEFAULT '0.0',
+  `practical` decimal(10,1) DEFAULT '0.0',
+  `Assignment1` decimal(10,1) DEFAULT '0.0',
+  `Assignment2` decimal(10,1) DEFAULT '0.0',
+  `Assignment3` decimal(10,1) DEFAULT '0.0',
+  `Assignment4` decimal(10,1) DEFAULT '0.0',
+  `Assignment5` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -833,6 +831,41 @@ INSERT INTO `classcna24c7` (`ID`, `studentname`, `coursename`, `classname`, `lev
 (1, 'Msghana	Zeweldi ', 'CNA24', 7, ''),
 (2, 'Merry  Welderufael', 'CNA24', 7, ''),
 (3, 'Winta Yohannes Zerai', 'CNA24', 7, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classcna24c7marklist`
+--
+
+DROP TABLE IF EXISTS `classcna24c7marklist`;
+CREATE TABLE IF NOT EXISTS `classcna24c7marklist` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_name` varchar(100) NOT NULL,
+  `course_name` varchar(255) NOT NULL,
+  `level` varchar(255) NOT NULL,
+  `class` varchar(255) NOT NULL,
+  `term` varchar(100) NOT NULL,
+  `test1` decimal(10,1) DEFAULT '0.0',
+  `test2` decimal(10,1) DEFAULT '0.0',
+  `Assignment1` decimal(10,1) DEFAULT '0.0',
+  `Assignment2` decimal(10,1) DEFAULT '0.0',
+  `Assignment3` decimal(10,1) DEFAULT '0.0',
+  `Assignment4` decimal(10,1) DEFAULT '0.0',
+  `Assignment5` decimal(10,1) DEFAULT '0.0',
+  `groupdiscussion` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `student_name` (`student_name`,`term`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `classcna24c7marklist`
+--
+
+INSERT INTO `classcna24c7marklist` (`id`, `student_name`, `course_name`, `level`, `class`, `term`, `test1`, `test2`, `Assignment1`, `Assignment2`, `Assignment3`, `Assignment4`, `Assignment5`, `groupdiscussion`, `total`, `date`) VALUES
+(1, 'Msghana	Zeweldi ', 'CNA24', '', '7', '1', 3.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.4, '2024-12-25');
 
 -- --------------------------------------------------------
 
@@ -870,13 +903,13 @@ CREATE TABLE IF NOT EXISTS `classdma24c1marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `test1` int DEFAULT '0',
-  `test2` int DEFAULT '0',
-  `Assignment1` int DEFAULT '0',
-  `Assignment2` int DEFAULT '0',
-  `GroupAssignment` int DEFAULT '0',
-  `finalexam` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `test1` decimal(10,1) DEFAULT '0.0',
+  `test2` decimal(10,1) DEFAULT '0.0',
+  `Assignment1` decimal(10,1) DEFAULT '0.0',
+  `Assignment2` decimal(10,1) DEFAULT '0.0',
+  `GroupAssignment` decimal(10,1) DEFAULT '0.0',
+  `finalexam` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -887,7 +920,7 @@ CREATE TABLE IF NOT EXISTS `classdma24c1marklist` (
 --
 
 INSERT INTO `classdma24c1marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `test1`, `test2`, `Assignment1`, `Assignment2`, `GroupAssignment`, `finalexam`, `total`, `date`) VALUES
-(1, 'kalil', 'DMA24', '1', '1', 3, 7, 5, 0, 19, 34, 68, '2024-12-09');
+(1, 'kalil', 'DMA24', '1', '1', 3.0, 7.0, 5.4, 0.0, 19.0, 34.0, 68.0, '2024-12-09');
 
 -- --------------------------------------------------------
 
@@ -965,17 +998,17 @@ CREATE TABLE IF NOT EXISTS `classeng24a0c1marklist` (
   `level` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `speakingskills` int DEFAULT '0',
-  `readingskills` int DEFAULT '0',
-  `writingskills` int DEFAULT '0',
-  `listeningskills` int DEFAULT '0',
-  `grammarcomprehension` int DEFAULT '0',
-  `panctuality` int DEFAULT '0',
-  `participation` int DEFAULT '0',
-  `attendance` int DEFAULT '0',
-  `homework` int DEFAULT '0',
-  `discipline` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `speakingskills` decimal(10,1) DEFAULT '0.0',
+  `readingskills` decimal(10,1) DEFAULT '0.0',
+  `writingskills` decimal(10,1) DEFAULT '0.0',
+  `listeningskills` decimal(10,1) DEFAULT '0.0',
+  `grammarcomprehension` decimal(10,1) DEFAULT '0.0',
+  `panctuality` decimal(10,1) DEFAULT '0.0',
+  `participation` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `homework` decimal(10,1) DEFAULT '0.0',
+  `discipline` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -1025,16 +1058,16 @@ CREATE TABLE IF NOT EXISTS `classeng24a1c4marklist` (
   `level` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) DEFAULT NULL,
-  `classwork1` int DEFAULT '0',
-  `classwork2` int DEFAULT '0',
-  `test1` int DEFAULT '0',
-  `test2` int DEFAULT '0',
-  `group_assignment1` int DEFAULT '0',
-  `group_assignment2` int DEFAULT '0',
-  `participation` int DEFAULT '0',
-  `attendance` int DEFAULT '0',
-  `final_exam` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `classwork1` decimal(10,1) DEFAULT '0.0',
+  `classwork2` decimal(10,1) DEFAULT '0.0',
+  `test1` decimal(10,1) DEFAULT '0.0',
+  `test2` decimal(10,1) DEFAULT '0.0',
+  `group_assignment1` decimal(10,1) DEFAULT '0.0',
+  `group_assignment2` decimal(10,1) DEFAULT '0.0',
+  `participation` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `final_exam` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_student_term` (`student_name`,`term`)
@@ -1045,8 +1078,8 @@ CREATE TABLE IF NOT EXISTS `classeng24a1c4marklist` (
 --
 
 INSERT INTO `classeng24a1c4marklist` (`id`, `student_name`, `course_name`, `level`, `class`, `term`, `classwork1`, `classwork2`, `test1`, `test2`, `group_assignment1`, `group_assignment2`, `participation`, `attendance`, `final_exam`, `total`, `date`) VALUES
-(1, 'sbhat', 'ENG24', '', '4', '2', 3, 0, 0, 0, 24, 0, 0, 0, 0, 27, '2024-12-05'),
-(3, 'sbhat', 'ENG24', 'A1', '4', '1', 10, 9, 10, 9, 24, 5, 4, 9, 4, 84, '2024-12-06');
+(1, 'sbhat', 'ENG24', '', '4', '2', 3.0, 0.0, 0.0, 0.0, 24.0, 0.0, 0.0, 0.0, 0.0, 27.0, '2024-12-05'),
+(3, 'sbhat', 'ENG24', 'A1', '4', '1', 10.0, 9.0, 10.0, 9.0, 24.0, 5.0, 4.0, 9.0, 4.0, 84.0, '2024-12-06');
 
 -- --------------------------------------------------------
 
@@ -1092,17 +1125,17 @@ CREATE TABLE IF NOT EXISTS `classeng24a1c5marklist` (
   `level` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `speakingskills` int DEFAULT '0',
-  `readingskills` int DEFAULT '0',
-  `writingskills` int DEFAULT '0',
-  `listeningskills` int DEFAULT '0',
-  `grammarcomprehension` int DEFAULT '0',
-  `panctuality` int DEFAULT '0',
-  `participation` int DEFAULT '0',
-  `attendance` int DEFAULT '0',
-  `homework` int DEFAULT '0',
-  `discipline` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `speakingskills` decimal(10,1) DEFAULT '0.0',
+  `readingskills` decimal(10,1) DEFAULT '0.0',
+  `writingskills` decimal(10,1) DEFAULT '0.0',
+  `listeningskills` decimal(10,1) DEFAULT '0.0',
+  `grammarcomprehension` decimal(10,1) DEFAULT '0.0',
+  `panctuality` decimal(10,1) DEFAULT '0.0',
+  `participation` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `homework` decimal(10,1) DEFAULT '0.0',
+  `discipline` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -1113,7 +1146,7 @@ CREATE TABLE IF NOT EXISTS `classeng24a1c5marklist` (
 --
 
 INSERT INTO `classeng24a1c5marklist` (`id`, `student_name`, `course_name`, `level`, `class`, `term`, `speakingskills`, `readingskills`, `writingskills`, `listeningskills`, `grammarcomprehension`, `panctuality`, `participation`, `attendance`, `homework`, `discipline`, `total`, `date`) VALUES
-(1, 'trial2', 'ENG24', 'A1', '5', '1', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, '2024-12-10');
+(1, 'trial2', 'ENG24', 'A1', '5', '1', 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, '2024-12-10');
 
 -- --------------------------------------------------------
 
@@ -1161,16 +1194,16 @@ CREATE TABLE IF NOT EXISTS `classeng24a1c6marklist` (
   `level` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) DEFAULT NULL,
-  `classwork1` int DEFAULT '0',
-  `classwork2` int DEFAULT '0',
-  `test1` int DEFAULT '0',
-  `test2` int DEFAULT '0',
-  `group_assignment1` int DEFAULT '0',
-  `group_assignment2` int DEFAULT '0',
-  `participation` int DEFAULT '0',
-  `attendance` int DEFAULT '0',
-  `final_exam` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `classwork1` decimal(10,1) DEFAULT '0.0',
+  `classwork2` decimal(10,1) DEFAULT '0.0',
+  `test1` decimal(10,1) DEFAULT '0.0',
+  `test2` decimal(10,1) DEFAULT '0.0',
+  `group_assignment1` decimal(10,1) DEFAULT '0.0',
+  `group_assignment2` decimal(10,1) DEFAULT '0.0',
+  `participation` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `final_exam` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_student_term` (`student_name`,`term`)
@@ -1181,8 +1214,8 @@ CREATE TABLE IF NOT EXISTS `classeng24a1c6marklist` (
 --
 
 INSERT INTO `classeng24a1c6marklist` (`id`, `student_name`, `course_name`, `level`, `class`, `term`, `classwork1`, `classwork2`, `test1`, `test2`, `group_assignment1`, `group_assignment2`, `participation`, `attendance`, `final_exam`, `total`, `date`) VALUES
-(1, 'sample student', 'ENG24', '', '6', '1', 5, 0, 0, 0, 0, 0, 0, 0, 0, 5, '2024-12-05'),
-(3, 'sample student 2', 'ENG24', '', '6', '1', 6, 0, 0, 3, 0, 0, 0, 0, 0, 9, '2024-12-05');
+(1, 'sample student', 'ENG24', '', '6', '1', 5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, '2024-12-05'),
+(3, 'sample student 2', 'ENG24', '', '6', '1', 6.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 0.0, 9.0, '2024-12-05');
 
 -- --------------------------------------------------------
 
@@ -1206,7 +1239,6 @@ CREATE TABLE IF NOT EXISTS `classeng24a2c4` (
 
 INSERT INTO `classeng24a2c4` (`ID`, `studentname`, `coursename`, `classname`, `levelname`) VALUES
 (1, 'Adiam Habtom', 'ENG24', 4, 'A2'),
-(2, 'Adiam Habtom', 'ENG24', 4, 'A2'),
 (3, 'Tmnit Fitwi', 'ENG24', 4, 'A2'),
 (4, 'Tmnit Fitwi', 'ENG24', 4, 'A2'),
 (5, 'Soliana Matiwos', 'ENG24', 4, 'A2'),
@@ -1225,6 +1257,43 @@ INSERT INTO `classeng24a2c4` (`ID`, `studentname`, `coursename`, `classname`, `l
 (18, 'Nahom Habtab', 'ENG24', 4, 'A2'),
 (19, 'Ruta Gebrezgziabher', 'ENG24', 4, 'A2'),
 (20, 'Yafet Kidane', 'ENG24', 4, 'A2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classeng24a2c4marklist`
+--
+
+DROP TABLE IF EXISTS `classeng24a2c4marklist`;
+CREATE TABLE IF NOT EXISTS `classeng24a2c4marklist` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_name` varchar(100) NOT NULL,
+  `course_name` varchar(255) NOT NULL,
+  `level` varchar(255) NOT NULL,
+  `class` varchar(255) NOT NULL,
+  `term` varchar(100) NOT NULL,
+  `speakingskills` decimal(10,1) DEFAULT '0.0',
+  `readingskills` decimal(10,1) DEFAULT '0.0',
+  `writingskills` decimal(10,1) DEFAULT '0.0',
+  `listeningskills` decimal(10,1) DEFAULT '0.0',
+  `grammarcomprehension` decimal(10,1) DEFAULT '0.0',
+  `panctuality` decimal(10,1) DEFAULT '0.0',
+  `participation` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `homework` decimal(10,1) DEFAULT '0.0',
+  `discipline` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `student_name` (`student_name`,`term`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `classeng24a2c4marklist`
+--
+
+INSERT INTO `classeng24a2c4marklist` (`id`, `student_name`, `course_name`, `level`, `class`, `term`, `speakingskills`, `readingskills`, `writingskills`, `listeningskills`, `grammarcomprehension`, `panctuality`, `participation`, `attendance`, `homework`, `discipline`, `total`, `date`) VALUES
+(1, 'Adiam Habtom', 'ENG24', 'A2', '4', '1', 3.2, 3.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6.6, '2024-12-25');
 
 -- --------------------------------------------------------
 
@@ -1408,15 +1477,15 @@ CREATE TABLE IF NOT EXISTS `classit24c4marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `homework1` int DEFAULT '0',
-  `homework2` int DEFAULT '0',
-  `homework3` int DEFAULT '0',
-  `homework4` int DEFAULT '0',
-  `quiz` int DEFAULT '0',
-  `attendance` int DEFAULT '0',
-  `finalexam` int DEFAULT '0',
-  `finalproject` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `homework1` decimal(10,1) DEFAULT '0.0',
+  `homework2` decimal(10,1) DEFAULT '0.0',
+  `homework3` decimal(10,1) DEFAULT '0.0',
+  `homework4` decimal(10,1) DEFAULT '0.0',
+  `quiz` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `finalexam` decimal(10,1) DEFAULT '0.0',
+  `finalproject` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -1427,8 +1496,8 @@ CREATE TABLE IF NOT EXISTS `classit24c4marklist` (
 --
 
 INSERT INTO `classit24c4marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `homework1`, `homework2`, `homework3`, `homework4`, `quiz`, `attendance`, `finalexam`, `finalproject`, `total`, `date`) VALUES
-(1, 'trail', 'IT24', '4', '1', 4, 4, 4, 4, 9, 9, 29, 29, 92, '2024-12-10'),
-(2, 'trail', 'IT24', '4', '2', 4, 0, 0, 0, 0, 0, 0, 29, 33, '2024-12-10');
+(1, 'trail', 'IT24', '4', '1', 4.0, 4.0, 4.0, 4.0, 9.0, 9.0, 29.0, 29.0, 92.0, '2024-12-10'),
+(2, 'trail', 'IT24', '4', '2', 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 29.0, 33.0, '2024-12-10');
 
 -- --------------------------------------------------------
 
@@ -1470,14 +1539,14 @@ CREATE TABLE IF NOT EXISTS `classit24c5marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `homework1` int DEFAULT '0',
-  `homework2` int DEFAULT '0',
-  `homework3` int DEFAULT '0',
-  `homework4` int DEFAULT '0',
-  `quiz` int DEFAULT '0',
-  `attendance` int DEFAULT '0',
-  `finalexam` int DEFAULT '0',
-  `finalproject` int DEFAULT '0',
+  `homework1` decimal(10,1) DEFAULT '0.0',
+  `homework2` decimal(10,1) DEFAULT '0.0',
+  `homework3` decimal(10,1) DEFAULT '0.0',
+  `homework4` decimal(10,1) DEFAULT '0.0',
+  `quiz` decimal(10,1) DEFAULT '0.0',
+  `attendance` decimal(10,1) DEFAULT '0.0',
+  `finalexam` decimal(10,1) DEFAULT '0.0',
+  `finalproject` decimal(10,1) DEFAULT '0.0',
   `total` int DEFAULT '0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
@@ -1489,12 +1558,12 @@ CREATE TABLE IF NOT EXISTS `classit24c5marklist` (
 --
 
 INSERT INTO `classit24c5marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `homework1`, `homework2`, `homework3`, `homework4`, `quiz`, `attendance`, `finalexam`, `finalproject`, `total`, `date`) VALUES
-(1, 'Robel Tesfamichael', 'IT24', '5', '1', 4, 4, 4, 4, 9, 9, 29, 29, 92, '2024-12-18'),
-(2, 'Robel Tesfamichael', 'IT24', '5', '2', 5, 5, 5, 5, 10, 10, 30, 30, 100, '2024-12-18'),
-(3, 'Robel Tesfamichael', 'IT24', '5', '3', 3, 3, 2, 2, 7, 6, 20, 24, 67, '2024-12-18'),
-(4, 'Fnan Hadish', 'IT24', '5', '1', 5, 3, 3, 4, 10, 8, 23, 30, 86, '2024-12-18'),
-(5, 'Fnan Hadish', 'IT24', '5', '2', 4, 4, 4, 4, 10, 10, 30, 30, 96, '2024-12-18'),
-(6, 'Fnan Hadish', 'IT24', '5', '3', 2, 2, 4, 3, 6, 6, 24, 12, 59, '2024-12-18');
+(1, 'Robel Tesfamichael', 'IT24', '5', '1', 0.0, 4.0, 4.0, 4.0, 9.0, 9.0, 29.0, 29.0, 92, '2024-12-18'),
+(2, 'Robel Tesfamichael', 'IT24', '5', '2', 0.0, 5.0, 5.0, 5.0, 10.0, 10.0, 30.0, 30.0, 100, '2024-12-18'),
+(3, 'Robel Tesfamichael', 'IT24', '5', '3', 0.0, 3.0, 2.0, 2.0, 7.0, 6.0, 20.0, 24.0, 67, '2024-12-18'),
+(4, 'Fnan Hadish', 'IT24', '5', '1', 0.0, 3.0, 3.0, 4.0, 10.0, 8.0, 23.0, 30.0, 86, '2024-12-18'),
+(5, 'Fnan Hadish', 'IT24', '5', '2', 0.0, 4.0, 4.0, 4.0, 10.0, 10.0, 30.0, 30.0, 96, '2024-12-18'),
+(6, 'Fnan Hadish', 'IT24', '5', '3', 0.0, 2.0, 4.0, 3.0, 6.0, 6.0, 24.0, 12.0, 59, '2024-12-18');
 
 -- --------------------------------------------------------
 
@@ -1544,15 +1613,15 @@ CREATE TABLE IF NOT EXISTS `classplmb24c1marklist` (
   `course_name` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `term` varchar(100) NOT NULL,
-  `classwork1` int DEFAULT '0',
-  `classwork2` int DEFAULT '0',
-  `homework1` int DEFAULT '0',
-  `homework2` int DEFAULT '0',
-  `Assignment1` int DEFAULT '0',
-  `Assignment2` int DEFAULT '0',
-  `finalproject` int DEFAULT '0',
-  `finalexam` int DEFAULT '0',
-  `total` int DEFAULT '0',
+  `classwork1` decimal(10,0) DEFAULT '0',
+  `classwork2` decimal(10,0) DEFAULT '0',
+  `homework1` decimal(10,0) DEFAULT '0',
+  `homework2` decimal(10,0) DEFAULT '0',
+  `Assignment1` decimal(10,1) DEFAULT '0.0',
+  `Assignment2` decimal(10,1) DEFAULT '0.0',
+  `finalproject` decimal(10,1) DEFAULT '0.0',
+  `finalexam` decimal(10,1) DEFAULT '0.0',
+  `total` decimal(10,1) DEFAULT '0.0',
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_name` (`student_name`,`term`)
@@ -1563,10 +1632,10 @@ CREATE TABLE IF NOT EXISTS `classplmb24c1marklist` (
 --
 
 INSERT INTO `classplmb24c1marklist` (`id`, `student_name`, `course_name`, `class`, `term`, `classwork1`, `classwork2`, `homework1`, `homework2`, `Assignment1`, `Assignment2`, `finalproject`, `finalexam`, `total`, `date`) VALUES
-(2, 'Mebrahtom Gebrezgabiher', 'PLMB24', '1', '1', 9, 9, 4, 4, 9, 9, 18, 25, 87, '2024-12-18'),
-(3, 'Tedros Kibreab', 'PLMB24', '1', '1', 8, 9, 4, 4, 9, 9, 18, 22, 83, '2024-12-18'),
-(4, 'Menkem Biniam', 'PLMB24', '1', '1', 2, 9, 4, 4, 9, 9, 16, 22, 75, '2024-12-18'),
-(5, 'Solomon Amanuel', 'PLMB24', '1', '1', 9, 9, 4, 4, 9, 6, 20, 30, 91, '2024-12-18');
+(2, 'Mebrahtom Gebrezgabiher', 'PLMB24', '1', '1', 9, 9, 4, 4, 9.0, 9.0, 18.0, 25.0, 87.0, '2024-12-18'),
+(3, 'Tedros Kibreab', 'PLMB24', '1', '1', 8, 9, 4, 4, 9.0, 9.0, 18.0, 22.0, 83.0, '2024-12-18'),
+(4, 'Menkem Biniam', 'PLMB24', '1', '1', 2, 9, 4, 4, 9.0, 9.0, 16.0, 22.0, 75.0, '2024-12-18'),
+(5, 'Solomon Amanuel', 'PLMB24', '1', '1', 9, 9, 4, 4, 9.0, 6.0, 20.0, 30.0, 91.0, '2024-12-18');
 
 -- --------------------------------------------------------
 
@@ -1710,6 +1779,29 @@ INSERT INTO `course_names` (`id`, `courses`, `level`, `classes`, `terms`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dntgiveup`
+--
+
+DROP TABLE IF EXISTS `dntgiveup`;
+CREATE TABLE IF NOT EXISTS `dntgiveup` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `mark1` int NOT NULL,
+  `mark2` int NOT NULL,
+  `total` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `dntgiveup`
+--
+
+INSERT INTO `dntgiveup` (`id`, `name`, `mark1`, `mark2`, `total`) VALUES
+(1, 'ksun', 90, 95, 185);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `marklist`
 --
 
@@ -1721,6 +1813,29 @@ CREATE TABLE IF NOT EXISTS `marklist` (
   `mark` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `newhope`
+--
+
+DROP TABLE IF EXISTS `newhope`;
+CREATE TABLE IF NOT EXISTS `newhope` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `mark1` int NOT NULL,
+  `mark2` int NOT NULL,
+  `total` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `newhope`
+--
+
+INSERT INTO `newhope` (`id`, `name`, `mark1`, `mark2`, `total`) VALUES
+(1, 'samri', 10, 90, 100);
 
 -- --------------------------------------------------------
 
