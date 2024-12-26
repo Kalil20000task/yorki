@@ -23,6 +23,7 @@ if (session_status() == PHP_SESSION_NONE) {
         .header {
             display: flex;
             justify-content: space-between;
+            width: 100%;
             align-items: center;
             padding: 10px 20px;
             background: linear-gradient(90deg, #007bff, #5a3e36);
