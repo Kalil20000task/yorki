@@ -89,7 +89,12 @@ include "rolefilter.php";
     include "header.php";
     ?>
     <div class="container">
-        <h2>Select a Course</h2>
+    <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
+    <h2 style="margin: 0;">Select a Course</h2>
+</div>
+
+        
         <form method="POST" action="">
     <div class="input-group">
         <label for="course">Course Name:</label>
@@ -191,7 +196,7 @@ include "rolefilter.php";
      
 
     <div class="input-group">
-        <button type="submit">Go</button>
+        <button type="submit" style="background-color: #ec971f;">Go</button>
     </div>
 </form>
 
@@ -212,6 +217,22 @@ include "rolefilter.php";
         $selectedCourseterm=$selectedCourse.'-'.$term;
         
         switch ($selectedCourseterm) {
+            case 'ACFN24-1':
+            case 'ACFN24-2':    
+            case 'ACFN24-3':
+                            // header("Location: eng24marklistformatallterms.php?course=$selectedCourse&class=$class&level=$level&term=$term");
+                        $url = "acfnmarklistformatterm12and3.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+    
+                        echo "<script>window.location.href='$url';</script>";
+                        exit;
+            case 'ACFN24-4':
+            case 'ACFN24-5':    
+            case 'ACFN24-6':
+                                            // header("Location: eng24marklistformatallterms.php?course=$selectedCourse&class=$class&level=$level&term=$term");
+                    $url = "acfnmarklistformatterm45and6.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                    
+                    echo "<script>window.location.href='$url';</script>";
+                    exit;            
             case 'ACFNs24-1':
             case 'ACFNs24-2':
                     $url = "acfnsmarklistformat_term_1and2.php?course=$selectedCourse&class=$class&term=$term";

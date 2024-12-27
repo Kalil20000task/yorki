@@ -1,9 +1,3 @@
-<?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start(); // Start the session only if it hasn't started yet
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +17,10 @@ if (session_status() == PHP_SESSION_NONE) {
         .header {
             display: flex;
             justify-content: space-between;
-            width: 100%;
             align-items: center;
-            padding: 10px 20px;
-            background: linear-gradient(90deg, #007bff, #5a3e36);
+            width: 100%;
+            padding: 5px 10px;
+            background: linear-gradient(90deg, rgb(190, 198, 207), #5a3e36);
             color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: sticky;
@@ -39,6 +33,16 @@ if (session_status() == PHP_SESSION_NONE) {
             cursor: pointer;
             display: none;
             color: #fff;
+        }
+
+        .header .logo-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo-title img {
+            height: 40px; /* Adjust the height of the logo */
+            margin-right: 5px; /* Space between the logo and the title */
         }
 
         .header .title h2 {
@@ -80,7 +84,7 @@ if (session_status() == PHP_SESSION_NONE) {
         }
 
         .header .username {
-            margin-left: 20px;
+            /* margin-left: 5px; */
             font-size: 16px;
             color: #fff;
         }
@@ -122,7 +126,6 @@ if (session_status() == PHP_SESSION_NONE) {
             color: #fff;
         }
 
-        /* Responsive Styles */
         @media (max-width: 768px) {
             .header a {
                 display: none;
@@ -143,24 +146,19 @@ if (session_status() == PHP_SESSION_NONE) {
     <!-- Header Navigation -->
     <div class="header">
         <span class="menu-icon" onclick="openDrawer()">&#9776;</span>
-        <?php
-        if (isset($_SESSION['username'])) {
-            echo '<div class="username">Welcome, ' . htmlspecialchars($_SESSION['username']) . '</div>';
-        }
-        ?>
-
-        <div class="title">
-            <h2>TrainUp Student System</h2>
+        <div class="logo-title">
+            <img src="images/logo.png" alt="Company Logo">
+            <div class="title">
+                <h2 style="color:#242424">TrainUp SMS</h2>
+            </div>
         </div>
-
-        <!-- Display session username -->
-        
         <?php
+       
+
         // Check user role and display links accordingly
         if (isset($_SESSION['role'])) {
             $role = $_SESSION['role'];
 
-            // Admin role - show all links
             if (in_array('admin', $role)) {
                 echo '<a href="attendance.php">Attendance</a>';
                 echo '<a href="marklistmenu.php">Add Mark</a>';
@@ -169,31 +167,28 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo '<a href="finalreport.php">Final Report</a>';
                 echo '<a href="register_student.php">Register Student</a>';
                 echo '<a href="register_staffs.php">Register Staff</a>';
-            }
-
-            // Manager role - show only some links
-            if (in_array('office', $role)) {
+            } elseif (in_array('office', $role)) {
                 echo '<a href="attendance.php">Attendance</a>';
                 echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
                 echo '<a href="finalreport.php">Final Report</a>';
                 echo '<a href="register_student.php">Register Student</a>';
-            }
-
-            // Other roles - show restricted links
-            else {
-                if (!in_array('admin', $role)) {
-                    echo '<a href="marklistmenu.php">Add Mark</a>';
-                    echo '<a href="studentlist.php">Students</a>';
-                    echo '<a href="marklist2.php">Mark List</a>';
-                    echo '<a href="finalreport.php">Final Report</a>';
-                }
+            } else {
+                echo '<a href="marklistmenu.php">Add Mark</a>';
+                echo '<a href="studentlist.php">Students</a>';
+                echo '<a href="marklist2.php">Mark List</a>';
+                echo '<a href="finalreport.php">Final Report</a>';
             }
         }
         ?>
-
         <a class="logout-button" href="logout.php">Logout</a>
+        <?php
+        if (isset($_SESSION['username'])) {
+            echo '<div class="username" style="color:gold">Hello,' . htmlspecialchars($_SESSION['username']) . '</div>';
+        }
+        ?>
+
     </div>
 
     <script>

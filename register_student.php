@@ -7,11 +7,7 @@ if (!isset($_SESSION['username'])) {
 require "connection.php";
 $sql = "SELECT DISTINCT courses FROM course_names";
 $courseResult = $conn->query($sql);
-
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,10 +15,7 @@ $courseResult = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Redirect</title>
-    <!-- <link rel="stylesheet" href="cssstyle.css"> -->
-
     <style>
-        /* Copy the styles from your HTML */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -32,16 +25,19 @@ $courseResult = $conn->query($sql);
             color: #fff;
         }
         .container {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 40%;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9); /* Mimic light form background */
+            border-radius: 10px;
+            max-width: 500px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            color: #333; /* Text color */
         }
         .container h2 {
             text-align: center;
             margin-bottom: 20px;
+            font-weight: bold;
+            color: #333; /* Dark header text */
         }
         .input-group {
             margin-bottom: 15px;
@@ -49,143 +45,110 @@ $courseResult = $conn->query($sql);
         .input-group label {
             display: block;
             margin-bottom: 5px;
-            color: #ccc;
+            font-weight: bold;
+            color: #333;
         }
-        .input-group input {
+        .input-group input,
+        .input-group select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #555;
+            border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
-            background-color: #444;
-            color: #f8f8f8;
+            background-color: #f9f9f9; /* Mimic light input fields */
         }
-        .input-group input:focus {
-            border-color: #007bff;
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #007bff; /* Blue border on focus */
         }
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-        .buttons button {
-            width: 48%;
-            padding: 10px;
+        .btn {
+            width: 100%;
+            padding: 12px;
             border: none;
             border-radius: 5px;
             font-size: 16px;
+            background-color: #f0ad4e; /* Orange button */
+            color: #fff;
             cursor: pointer;
         }
-        .input-group .btn {
-            background-color: #007bff;
-            color: #fff;
+        .btn:hover {
+            background-color: #ec971f; /* Darker orange on hover */
         }
-        .input-group select, .input-group button {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #444;
-            color: #fff;
-            font-size: 16px;
-        }
-        button:hover {
-            opacity: 0.9;
+        .text-center img {
+            max-width: 150px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-<?php
-    include "header.php";
-    ?>
-    <div class="container">
-        <h2>Select a Course</h2>
-        <form id="studentForm">
-             <div class="input-group">
-                <label for="studentName">Student's Name</label>
-                <input type="text" name="studentName" id="studentName" placeholder="Enter student's name" required>
-             </div>
-            <div class="input-group">
+<?php include "header.php"; ?>
+<div class="container">
+     <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
+    <h2 style="margin: 0;">Select a course</h2>
+</div>
+    <form id="studentForm">
+        <div class="input-group">
+            <label for="studentName">Student's Name</label>
+            <input type="text" name="studentName" id="studentName" placeholder="Enter student's name" required>
+        </div>
+        <div class="input-group">
             <label for="course">Course Name:</label>
             <select id="course" name="course" required>
-            <option value="">Select a course</option>
-
-             <?php
-             if ($courseResult->num_rows > 0) {
-                   // Loop through the result set
-                   while ($row = $courseResult->fetch_assoc()) {
-                   // Use the course name as both the value and the text displayed in the option
-                   echo "<option value='" . $row["courses"] . "'>"?> <?php echo $row['courses'];?> <?php "</option>";
-                  }
-             } else {
-                   echo "<option value=''>No courses available</option>";
+                <option value="">Select a course</option>
+                <?php
+                if ($courseResult->num_rows > 0) {
+                    while ($row = $courseResult->fetch_assoc()) {
+                        echo "<option value='" . htmlspecialchars($row["courses"]) . "'>" . htmlspecialchars($row['courses']) . "</option>";
+                    }
+                } else {
+                    echo "<option value=''>No courses available</option>";
                 }
                 ?>
             </select>
-
-
-
-            </div>
-
-            <div class="input-group">
-                    <label for="term">Class :</label>
-                    <input type="number" min=0 max=20 name="class" id="class" >
-            </div>
-            <div class="input-group">
-            <label for="course">Level Name:</label>
-            <select id="course" name="level">
-            <option value="">Select level only for English course</option>
-            <option value="A0">A0</option>
-            <option value="A1">A1</option>
-
-            <option value="A2">A2</option>
-
-            <option value="A3">A3</option>
-
-            <option value="B1">B1</option>
-
-            <option value="B2">B2</option>
-
-            <option value="B3">B3</option>
-
-
-
+        </div>
+        <div class="input-group">
+            <label for="class">Class:</label>
+            <input type="number" min="0" max="20" name="class" id="class" placeholder="Enter class level">
+        </div>
+        <div class="input-group">
+            <label for="level">Level Name:</label>
+            <select id="level" name="level">
+                <option value="">Select level only for English course</option>
+                <option value="A0">A0</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="B1">B1</option>
+                <option value="B2">B2</option>
+                <option value="B3">B3</option>
             </select>
+        </div>
+        <div class="input-group">
+            <button class="btn" type="submit">Register Student</button>
+        </div>
+    </form>
+</div>
 
-
-
-            </div>
-           
-           
-            <div class="input-group">
-                <button class="btn" type="submit">Register Student</button>
-            </div>
-        </form>
-    </div>
-    
-    <script>
-        document.getElementById("studentForm").addEventListener("submit", function (e) {
-            e.preventDefault(); // Prevent form submission
-
-            // Collect form data
-            const formData = new FormData(this);
-
-            // Send data using fetch
-            fetch("process.php", {
-                method: "POST",
-                body: formData,
+<script>
+    document.getElementById("studentForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetch("process.php", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert(data.message);
+                } else {
+                    alert("Error: " + data.message);
+                }
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "success") {
-                        alert(data.message); // Success message
-                    } else {
-                        alert("Error: " + data.message); // Error message
-                    }
-                })
-                .catch(error => {
-                    alert("An unexpected error occurred: " + error.message);
-                });
-        });
-    </script>
+            .catch(error => {
+                alert("An unexpected error occurred: " + error.message);
+            });
+    });
+</script>
 </body>
 </html>

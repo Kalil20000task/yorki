@@ -119,7 +119,7 @@ $studentResult = $conn->query($sql);
  
 </head>
 <body>
-<?php
+    <?php
     include "header.php";
     ?>
 <div class="container">
@@ -152,49 +152,56 @@ $studentResult = $conn->query($sql);
 
             </div>
 
-    <div class="input-group-wrapper">
+    <!-- <div class="input-group-wrapper">
         <div class="input-group">
-            <label for="test1">Test 1 (10)</label>
-            <input type="number" id="test1" min="0" max="10" oninput="calculateTotal() " step="any">
+            <label for="classwork1">Classwork 1 (5)</label>
+            <input type="number" id="classwork1" min="0" max="5" oninput="calculateTotal()">
         </div>
-        <div class="input-group">
-            <label for="test2">Test 2 (10)</label>
-            <input type="number" id="test2" min="0" max="10" oninput="calculateTotal()" step="any">
-        </div>
+
         
-    </div>
+        <div class="input-group">
+            <label for="classwork2">Classwork 2 (5)</label>
+            <input type="number" id="classwork2" min="0" max="5" oninput="calculateTotal()">
+        </div>
+    </div> -->
 
     <div class="input-group-wrapper">
-    <div class="input-group">
-            <label for="assignment1">Assignment 1 (1)</label>
-            <input type="number" id="assignment1" min="0" max="1" oninput="calculateTotal()" step="any">
+        <div class="input-group">
+            <label for="test1">Test 1 (20)</label>
+            <input type="number" id="test1" min="0" max="20" oninput="calculateTotal()">
         </div>
         <div class="input-group">
-            <label for="assignment2">Assignment 2 (1)</label>
-            <input type="number" id="assignment2" min="0" max="1" oninput="calculateTotal()" step="any">
-        </div>
-    </div>
-    <div class="input-group-wrapper">
-    <div class="input-group">
-            <label for="assignment3">Assignment 3 (1)</label>
-            <input type="number" id="assignment3" min="0" max="1" oninput="calculateTotal()" step="any">
-        </div>
-        <div class="input-group">
-            <label for="assignment4">Assignment 4 (1)</label>
-            <input type="number" id="assignment4" min="0" max="1" oninput="calculateTotal()" step="any">
+            <label for="test2">Test 2 (20)</label>
+            <input type="number" id="test2" min="0" max="20" oninput="calculateTotal()">
         </div>
     </div>
 
-    <div class="input-group-wrapper">
-   
-    <div class="input-group">
-            <label for="assignmen5">Assignment 5 (1)</label>
-            <input type="number" id="assignment5" min="0" max="1" oninput="calculateTotal() " step="any">
+    <!-- <div class="input-group-wrapper">
+        <div class="input-group">
+            <label for="groupAssignment1">Group Assignment 1 (5)</label>
+            <input type="number" id="groupAssignment1" min="0" max="5" oninput="calculateTotal()">
         </div>
-    
-    <div class="input-group">
-            <label for="groupdiscussion">Group Discussion(2.5)</label>
-            <input type="number" id="groupdiscussion" min="0" max="2.5" oninput="calculateTotal()" step="any">
+        <div class="input-group">
+            <label for="groupAssignment2">Group Assignment 2 (5)</label>
+            <input type="number" id="groupAssignment2" min="0" max="5" oninput="calculateTotal()">
+        </div>
+    </div> -->
+
+    <div class="input-group-wrapper">
+        <div class="input-group">
+            <label for="participation">Participation (5)</label>
+            <input type="number" id="participation" min="0" max="5" oninput="calculateTotal()">
+        </div>
+        <div class="input-group">
+            <label for="attendance">Attendance (5)</label>
+            <input type="number" id="attendance" min="0" max="5" oninput="calculateTotal()">
+        </div>
+    </div>
+
+    <div class="input-group-wrapper">
+        <div class="input-group">
+            <label for="finalExam">Final Exam (50)</label>
+            <input type="number" id="finalExam" min="0" max="50" oninput="calculateTotal()">
         </div>
         <div class="input-group">
             <label for="total-display">Total (100)</label>
@@ -212,24 +219,17 @@ $studentResult = $conn->query($sql);
 <script>
     // Function to calculate total marks dynamically
     function calculateTotal() {
-        const validateInput = (value) => {
-    const num = parseFloat(value);
-    return isNaN(num) ? 0 : num; // Default to 0 if invalid
-};
         // const classwork1 = parseFloat(document.getElementById('classwork1').value) || 0;
         // const classwork2 = parseFloat(document.getElementById('classwork2').value) || 0;
-        const test1 =  validateInput(document.getElementById('test1').value);
-        const test2 =  validateInput(document.getElementById('test2').value);
-        const assignment1 = validateInput(document.getElementById('assignment1').value);
-        const assignment2 = validateInput(document.getElementById('assignment2').value);
-        const assignment3 = validateInput(document.getElementById('assignment3').value);
-        const assignment4 = validateInput(document.getElementById('assignment4').value);
-        const assignment5 = validateInput(document.getElementById('assignment5').value);
-        // const Assignment2 = parseFloat(document.getElementById('Assignment2').value) || 0;
-        // const GroupAssignment = parseFloat(document.getElementById('GroupAssignment').value) || 0;
-        const groupdiscussion = validateInput(document.getElementById('groupdiscussion').value);
+        const test1 = parseFloat(document.getElementById('test1').value) || 0;
+        const test2 = parseFloat(document.getElementById('test2').value) || 0;
+        // const groupAssignment1 = parseFloat(document.getElementById('groupAssignment1').value) || 0;
+        // const groupAssignment2 = parseFloat(document.getElementById('groupAssignment2').value) || 0;
+        const participation = parseFloat(document.getElementById('participation').value) || 0;
+        const attendance = parseFloat(document.getElementById('attendance').value) || 0;
+        const finalExam = parseFloat(document.getElementById('finalExam').value) || 0;
 
-        const total = test1 + test2 + assignment1+assignment2+assignment3+assignment4+assignment5 + groupdiscussion;
+        const total = test1 + test2 + participation + attendance + finalExam;
 
         document.getElementById('total-display').value = total.toFixed(2);
     }
@@ -258,23 +258,21 @@ $studentResult = $conn->query($sql);
             course: course,
             classname: classname,
             term: term,
+            // classwork1: document.getElementById('classwork1').value,
+            // classwork2: document.getElementById('classwork2').value,
             test1: document.getElementById('test1').value,
             test2: document.getElementById('test2').value,
-            assignment1: document.getElementById('assignment1').value,
-            assignment2: document.getElementById('assignment2').value,
-            assignment3: document.getElementById('assignment3').value,
-            assignment4: document.getElementById('assignment4').value,
-            assignment5: document.getElementById('assignment5').value,
-            
-            // GroupAssignment: document.getElementById('GroupAssignment').value,
-            
-            groupdiscussion: document.getElementById('groupdiscussion').value,
+            // groupAssignment1: document.getElementById('groupAssignment1').value,
+            // groupAssignment2: document.getElementById('groupAssignment2').value,
+            participation: document.getElementById('participation').value,
+            attendance: document.getElementById('attendance').value,
+            finalExam: document.getElementById('finalExam').value,
             total: total,
         };
 
         // AJAX POST request
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "cnamarkinserterterm1to3.php", true);
+        xhr.open("POST", "acfnmarkinserter45and6.php", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {

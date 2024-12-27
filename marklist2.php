@@ -33,87 +33,92 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     <style>
         /* Your styling code */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: url('images/ice.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-        }
-        .container {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 90%;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            word-wrap:break-word;
-            table-layout:fixed;
-        }
-        table, th, td {
-            border: 1px solid #555;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-            
-        }
-        td{
-            white-space: nowrap;
-        }
-        td.long-text {
-    white-space: normal; /* Allows breaking long text into multiple lines for specific cells */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('images/ice.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    width: 100%;
+    max-width: 100%;
 }
-        th {
-            background-color: #555;
-            color: #fff;
-        }
-        tr:nth-child(even) {
-            background-color: #444;
-        }
-        .filter {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .filter input, .filter select {
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #444;
-            color: #fff;
-        }
-        .filter button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-        }
-        .export-btn {
-            background-color: #28a745;
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .export-btn2 {
-            background-color: #28a745;
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }.modal-content {
+
+
+.container {
+    margin: 10px auto;
+    padding: 20px; /* Increased padding for more spacing */
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    color: #fff;
+    width: 100%; /* Increased container width */
+    overflow-x: auto;
+}
+table {
+    width: 100%; /* Ensure table takes full width of the container */
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+    table-layout: auto; /* Allow the table to adjust its layout dynamically */
+}
+table, th, td {
+    border: 1px solid #555;
+}
+th, td {
+    padding: 15px; /* Increased padding for better spacing */
+    text-align: center;
+}
+td {
+    white-space: nowrap;
+}
+td.long-text {
+    white-space: normal; 
+    /* Allows breaking long text into multiple lines for specific cells */
+}
+th {
+    background-color: #555;
+    color: #fff;
+}
+tr:nth-child(even) {
+    background-color: #444;
+}
+.filter {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.filter input, .filter select {
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+}
+.filter button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+}
+.export-btn {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.export-btn2 {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.modal-content {
     background: rgba(0, 0, 0, 0.8); /* Dark background with transparency */
     color: #fff; /* White text */
     border-radius: 8px; /* Rounded corners for a cohesive look */
@@ -160,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     background-color: #0056b3;
     border-color: #003d82;
 }
+
 
     </style>
     <?php include "header.php"; ?>

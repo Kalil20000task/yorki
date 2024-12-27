@@ -20,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
     MAX(CASE WHEN term = 2 THEN total END) AS Term2,
     MAX(CASE WHEN term = 3 THEN total END) AS Term3,
     MAX(CASE WHEN term = 4 THEN total END) AS Term4,
-    MAX(CASE WHEN term = 5 THEN total END) AS Term5
+    MAX(CASE WHEN term = 5 THEN total END) AS Term5,
+    MAX(CASE WHEN term = 6 THEN total END) AS Term6
 FROM 
     `$batchname`
 GROUP BY 
@@ -226,74 +227,92 @@ GROUP BY
     </form>
 
     <?php if (isset($data)): ?>
-        <table id="studentTable">
-            <?php
-            $stmt = $conn->prepare("SELECT COUNT(terms) AS term_count FROM course_names WHERE courses = ? AND classes = ? AND level = ?");
-             $stmt->bind_param("sss", $courseFilter,$classFilter,$levelFilter);
+    <table id="studentTable">
+        <?php
+        $stmt = $conn->prepare("SELECT COUNT(terms) AS term_count FROM course_names WHERE courses = ? AND classes = ? AND level = ?");
+        $stmt->bind_param("sss", $courseFilter, $classFilter, $levelFilter);
         
         // Execute the query
-             $stmt->execute();
-             $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
         
         if ($data->num_rows > 0) {
-    // Fetch field names dynamically
-    // $fields = $data->fetch_fields(); 
-
-    echo "<thead><tr>";
-    echo "<th> ID </th>";
-    echo "<th> Name </th>";
-    echo "<th> CourseName </th>";
-    echo "<th> Class </th>";
-    // echo "<th>" . htmlspecialchars($field->name) . "</th>";
-    $row = $result->fetch_assoc();
-    $termcount=$row["term_count"];
-    for ($i = 1; $i < $termcount+1; $i++) {
-        echo "<th> Term".$i. "</th>";
-    }
-    echo "<th> Total </th>";
-    echo "<th> Average </th>";
-    // echo "<th> Rank </th>";
-    
-    echo "</tr></thead>";
-
-
-    echo "<tbody>";
-    
-    
-    // while ($row2 = $data->fetch_assoc()) {
-    //     $total=$total + $row2['total'];
-    // }
-    while ($row2 = $data->fetch_assoc()) {
-        //calculating the total sum of the term results
-        $total=0;
-        for ($i = 1; $i < $termcount+1; $i++) {
-            $total=$total+ $row2['Term'.$i];
-        }
-        echo "<tr>";
-        // foreach ($row as $value) {
-            echo "<td>" . $row2['id'] . "</td>";
-            echo "<td>" . $row2['student_name'] . "</td>";
-            echo "<td>" . $row2['course_name'] . "</td>";
-            echo "<td>" . $row2['class'] . "</td>";
-            for ($i = 1; $i < $termcount+1; $i++) {
-                echo "<td>" . $row2['Term'.$i] ."</td>";
+            echo "<thead><tr>";
+            echo "<th> ID </th>";
+            echo "<th> Name </th>";
+            echo "<th> CourseName </th>";
+            echo "<th> Class </th>";
+            $row = $result->fetch_assoc();
+            $termcount = $row["term_count"];
+            for ($i = 1; $i < $termcount + 1; $i++) {
+                echo "<th> Term" . $i . "</th>";
             }
-            echo "<td>" . $total . "</td>";
-            //callculating the average
-            echo "<td>" . $total/$termcount . "</td>";
-          
-        echo "</tr>";
-    }
-
-    echo "</tbody>";
-} else {
-    echo "<thead><tr><th colspan='100%'>No records found</th></tr></thead>";
-    echo "<tbody><tr><td colspan='100%'>Please select both course and class.</td></tr></tbody>";
-}
-
+            echo "<th> Total </th>";
+            echo "<th> Average </th>";
+            echo "<th> Rank </th>";
+            echo "</tr></thead>";
+            
+            // Step 1: Calculate averages for all students
+            $students = [];
+            while ($row2 = $data->fetch_assoc()) {
+                $total = 0;
+                for ($i = 1; $i < $termcount + 1; $i++) {
+                    $total += $row2['Term' . $i];
+                }
+                $average = $total / $termcount;
+                $students[] = [
+                    'id' => $row2['id'],
+                    'student_name' => $row2['student_name'],
+                    'course_name' => $row2['course_name'],
+                    'class' => $row2['class'],
+                    'terms' => array_slice($row2, 4, $termcount), // Adjust index for terms
+                    'total' => $total,
+                    'average' => $average
+                ];
+            }
+            
+            // Step 2: Sort students by average in descending order
+            usort($students, function($a, $b) {
+                return $b['average'] <=> $a['average'];
+            });
+            
+            // Step 3: Assign ranks
+            $rank = 1;
+            foreach ($students as $key => &$student) {
+                if ($key > 0 && $students[$key - 1]['average'] == $student['average']) {
+                    $student['rank'] = $students[$key - 1]['rank']; // Same rank for equal averages
+                } else {
+                    $student['rank'] = $rank;
+                }
+                $rank++;
+            }
+            
+            // Step 4: Display data with ranks
+            echo "<tbody>";
+            foreach ($students as $student) {
+                echo "<tr>";
+                echo "<td>" . $student['id'] . "</td>";
+                echo "<td>" . $student['student_name'] . "</td>";
+                echo "<td>" . $student['course_name'] . "</td>";
+                echo "<td>" . $student['class'] . "</td>";
+                for ($i = 1; $i < $termcount + 1; $i++) {
+                    echo "<td>" . $student['terms']['Term' . $i] . "</td>";
+                }
+                echo "<td>" . $student['total'] . "</td>";
+                echo "<td>" . number_format($student['average'], 2) . "</td>";
+                echo "<td>" . $student['rank'] . "</td>";
+                echo "</tr>";
+            }
+            echo "</tbody>";
+        } else {
+            echo "<thead><tr><th colspan='100%'>No records found</th></tr></thead>";
+            echo "<tbody><tr><td colspan='100%'>Please select both course and class.</td></tr></tbody>";
+        }
         ?>
-    </tbody>
-</table>
+    </table>
+
+
+  
 </container>
 
         <!-- <form method="POST" action="export2.php"> -->

@@ -59,7 +59,7 @@ if (isset($data['studentName'])) {
             id INT AUTO_INCREMENT PRIMARY KEY,
             student_name VARCHAR(100) NOT NULL,
             course_name VARCHAR(255) NOT NULL,
-            level VARCHAR(255) NOT NULL,
+            
             class VARCHAR(255) NOT NULL,
             term VARCHAR(100) NOT NULL,
           
@@ -86,9 +86,9 @@ if (isset($data['studentName'])) {
 
     // Insert data into the table
     $insertQuery = "INSERT INTO `$classtablename`
-                    (student_name, course_name, level, class, term, finalproject, practical, Assignment1, Assignment2,Assignment3,Assignment4,Assignment5 ,attendance, total, date) 
+                    (student_name, course_name, class, term, finalproject, practical, Assignment1, Assignment2,Assignment3,Assignment4,Assignment5 ,attendance, total, date) 
                     VALUES 
-                    ('$studentName', '$course','$level','$classname', '$term', '$finalproject', '$practical', '$Assignment1', '$Assignment2','$Assignment3', '$Assignment4','$Assignment5' ,'$attendance', '$total', '$currentDate')";
+                    ('$studentName', '$course','$classname', '$term', '$finalproject', '$practical', '$Assignment1', '$Assignment2','$Assignment3', '$Assignment4','$Assignment5' ,'$attendance', '$total', '$currentDate')";
 if ($conn->query($insertQuery) === TRUE) {
     echo "New record created successfully.";
 } else {

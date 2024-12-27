@@ -79,7 +79,7 @@ $attendanceResult = $conn->query($sql);
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: url('images/ice.jpg') no-repeat center center fixed;
+            background: url('images/ices.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
         }
@@ -265,7 +265,10 @@ $attendanceResult = $conn->query($sql);
     
 
     <div class="container">
-        <h2>Student Record</h2>
+    <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
+    <h2 style="margin: 0;">Sttudent Attendance</h2>
+</div>
         <form method="POST" action="">
             <div class="form-group">
                 <label for="StudentName">Student Name:</label>
@@ -338,7 +341,7 @@ $attendanceResult = $conn->query($sql);
             <div class="input-group">
             <input type="hidden" name="date" value="<?php echo $currentDate; ?>">
             <div class="form-actions">
-                <button type="submit">Submit</button>
+                <button type="submit" style="background-color: #ec971f;">Submit</button>
             </div>
     </div>
 

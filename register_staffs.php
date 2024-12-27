@@ -123,7 +123,11 @@ input[type="checkbox"] {
     include "header.php";
     ?>
     <div class="container">
-        <h2>Register Staff Members</h2>
+    <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
+    <h2 style="margin: 0;">Register Staff Members</h2>
+</div>
+      
         <form id="studentForm">
              <div class="input-group">
                 <label for="fullName">Full Name</label>
@@ -178,7 +182,7 @@ input[type="checkbox"] {
            
            
             <div class="input-group">
-                <button class="btn" type="submit">Register User</button>
+                <button class="btn" type="submit" style="background-color: #ec971f;">Register User</button>
             </div>
         </form>
     </div>

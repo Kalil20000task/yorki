@@ -257,7 +257,13 @@ $studentResult = $conn->query($sql);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                alert(xhr.responseText);
+                if(xhr.responseText.includes("Duplicate")){
+                    alert ("you are trying to insert a duplicate record");
+                }
+                else{
+                    alert(xhr.responseText);
+
+                }
                 document.querySelector('form').reset();
                 document.getElementById('total-display').value = '';
             }
