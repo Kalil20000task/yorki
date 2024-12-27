@@ -28,144 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
 <!-- Bootstrap JavaScript (important for modal functionality) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="mainstyles.css" rel="stylesheet">
+
 
 <!-- Your custom JS -->
 
 
-    <style>
-        /* Your styling code */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: url('images/ice.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-        }
-        .container {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 90%;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            word-wrap:break-word;
-            table-layout:fixed;
-        }
-        table, th, td {
-            border: 1px solid #555;
-        }
-        th, td, h2 {
-            padding: 10px;
-            text-align: center;
-            
-        }
-        td{
-            white-space: nowrap;
-        }
-        td.long-text {
-    white-space: normal; /* Allows breaking long text into multiple lines for specific cells */
-}
-        th {
-            background-color: #555;
-            color: #fff;
-        }
-        tr:nth-child(even) {
-            background-color: #444;
-        }
-        .filter {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .filter input, .filter select {
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #444;
-            color: #fff;
-        }
-        .filter button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-        }
-        .export-btn {
-            background-color: #28a745;
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .export-btn2 {
-            background-color: #28a745;
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
 
-        .modal-content {
-    background: rgba(49, 47, 47); /* Dark background with transparency */
-    color: #fff; /* White text */
-    border-radius: 8px; /* Rounded corners for a cohesive look */
-    border: 1px solid #555; /* Match table border color */
-}
 
-.modal-header {
-    background-color: #555; /* Dark header background */
-    color: #fff; /* White text */
-    border-bottom: 1px solid #444; /* Match table header border */
-}
-
-.modal-title {
-    font-size: 18px; /* Adjust font size */
-    font-weight: bold;
-}
-
-.modal-body {
-    background-color: rgba(54, 53, 53, 0.7); /* Match container background */
-    color: #fff; /* White text */
-}
-
-.modal-footer {
-    background-color: rgba(0, 0, 0, 0.7); /* Match container background */
-    border-top: 1px solid #444; /* Match table border */
-}
-
-.close {
-    color: #fff; /* White close button */
-    opacity: 0.8;
-}
-
-.close:hover {
-    color: #ff0000; /* Highlight close button on hover */
-    opacity: 1;
-}
-
-.btn-primary {
-    background-color: #007bff; /* Match filter button color */
-    border-color: #0056b3;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #003d82;
-}
-
-    </style>
    
 </head>
     <meta charset="UTF-8">
@@ -231,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
             echo $batchname;
         }
         else{
-            echo "Select Batch";
+            echo "<h4>Select Batch</h4>";
         }
         
         ?> </h2>

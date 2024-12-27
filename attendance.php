@@ -74,187 +74,212 @@ $attendanceResult = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Record</title>
     <style>
-        /* Styles remain unchanged */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: url('images/ices.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-        }
-        .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .header a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        .header .logout-button {
-            background-color: red; /* Red color for the logout button */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none; /* Remove underline from link */
-            display: inline-block; /* Allow padding and background */
-        }
-        .drawer {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #333;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-        .drawer a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 22px;
-            color: #fff;
-            display: block;
-            transition: 0.3s;
-        }
-        .drawer a:hover {
-            background-color: #575757;
-        }
-        .drawer .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-            cursor: pointer;
-        }
-        .container {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 40%;
-        }
-        .container h2 {
-            text-align: center;
-        }
-        .tablecontainer {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 80%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            table-layout: fixed;
-        }
-        table, th, td {
-            border: 1px solid #555;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-            word-break: break-word;
-            vertical-align: middle;
-        }
-        th {
-            background-color: #555;
-            color: #fff;
-        }
-        tr:nth-child(even) {
-            background-color: #444;
-        }
-        input[type="text"], input[type="number"] {
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            width: calc(50% - 22px);
-            margin-bottom: 10px;
-            background-color: #444;
-            color: #fff;
-            display: inline-block;
-        }
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            width: 150px;
-            margin-top: 10px;
-            align-self: center;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        /* Add this style to your existing <style> section */
-        .delete-button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #dc3545; /* Red background color */
-            color: #fff;
-            cursor: pointer;
-            width: 80px; /* Adjust width if needed */
-        }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url('images/ices.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: #fff;
+    }
 
-        .delete-button:hover {
-            opacity: 0.9; /* Slightly darken on hover */
-        }
+    .header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-        .form-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            margin-right: 10px;
-            width: 30%;
-            text-align: right;
-        }
-        .form-actions {
-            display: flex;
-            justify-content: center;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            margin-left: 50px;
-            width: 30%;
-            text-align: right;
-        }
-        .input-group input, .input-group select {
-            
-            width: 60%;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: #444;
-            color: #f8f8f8;
-            margin-left: 10px;
-        }
-        .input-group input:focus, .input-group select:focus {
-            border-color: #007bff;
-        }
-    </style>
+    .header a {
+        color: #fff;
+        margin: 0 15px;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    .header .logout-button {
+        background-color: red;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .drawer {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #333;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    .drawer a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 22px;
+        color: #fff;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .drawer a:hover {
+        background-color: #575757;
+    }
+
+    .drawer .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+        cursor: pointer;
+    }
+
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 8px;
+        color: #fff;
+        width: 40%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .container h2 {
+        text-align: center;
+    }
+
+    .tablecontainer {
+        margin: 20px auto;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 8px;
+        color: #fff;
+        width: 80%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        table-layout: fixed;
+    }
+
+    table, th, td {
+        border: 1px solid #555;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        word-break: break-word;
+        vertical-align: middle;
+    }
+
+    th {
+        background-color: #555;
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #444;
+    }
+
+    input[type="text"], input[type="number"] {
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        width: calc(50% - 22px);
+        margin-bottom: 10px;
+        background-color: #444;
+        color: #fff;
+        display: inline-block;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        width: 150px;
+        margin-top: 10px;
+        align-self: center;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    .delete-button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #dc3545;
+        color: #fff;
+        cursor: pointer;
+        width: 80px;
+    }
+
+    .delete-button:hover {
+        opacity: 0.9;
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        margin-right: 10px;
+        width: 30%;
+        text-align: right;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: center;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    .input-group label {
+        margin-left: 50px;
+        width: 30%;
+        text-align: right;
+    }
+
+    .input-group input, .input-group select {
+        width: 60%;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #444;
+        color: #f8f8f8;
+        margin-left: 10px;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+        border-color: #007bff;
+    }
+</style>
+
 </head>
 <body>
     <?php
@@ -267,7 +292,7 @@ $attendanceResult = $conn->query($sql);
     <div class="container">
     <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
     <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
-    <h2 style="margin: 0;">Sttudent Attendance</h2>
+    <h2 style="margin: 0;">Student Attendance</h2>
 </div>
         <form method="POST" action="">
             <div class="form-group">

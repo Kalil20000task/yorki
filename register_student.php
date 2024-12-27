@@ -15,78 +15,16 @@ $courseResult = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Redirect</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: url('images/ice.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-        }
-        .container {
-            margin: 50px auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.9); /* Mimic light form background */
-            border-radius: 10px;
-            max-width: 500px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            color: #333; /* Text color */
-        }
-        .container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: bold;
-            color: #333; /* Dark header text */
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #333;
-        }
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: #f9f9f9; /* Mimic light input fields */
-        }
-        .input-group input:focus,
-        .input-group select:focus {
-            border-color: #007bff; /* Blue border on focus */
-        }
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: #f0ad4e; /* Orange button */
-            color: #fff;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #ec971f; /* Darker orange on hover */
-        }
-        .text-center img {
-            max-width: 150px;
-            margin-bottom: 20px;
-        }
-    </style>
+    <link href="menustyle.css" rel="stylesheet">
 </head>
 <body>
 <?php include "header.php"; ?>
 <div class="container">
-     <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
-    <h2 style="margin: 0;">Select a course</h2>
+<div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 0;">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto; margin: 0;">
+    <h2 style="margin: 0; line-height: 1;">Select a course</h2>
 </div>
+
     <form id="studentForm">
         <div class="input-group">
             <label for="studentName">Student's Name</label>

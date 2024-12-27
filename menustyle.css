@@ -1,0 +1,132 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('images/ice.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+.container {
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9); /* Light background */
+    border-radius: 10px;
+    max-width: 500px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    color: #333; /* Text color */
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333; /* Dark header text */
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9; /* Light input fields */
+    color: #333; /* Dark text inside input */
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5); /* Blue glow */
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons button {
+    width: 48%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.buttons .submit {
+    background-color: #f0ad4e; /* Orange button */
+    color: #fff;
+}
+
+.buttons .submit:hover {
+    background-color: #ec971f; /* Darker orange on hover */
+}
+
+.buttons .reset {
+    background-color: #d9534f; /* Red button */
+    color: #fff;
+}
+
+.buttons .reset:hover {
+    background-color: #c9302c; /* Darker red on hover */
+}
+
+.text-center img {
+    max-width: 150px;
+    margin: 0 auto 20px;
+    display: block; /* Center image */
+}
+.btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #f0ad4e; /* Orange button */
+        color: #fff;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: #ec971f; /* Darker orange on hover */
+    }
+    .roles-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 15px;
+    }
+    
+    .role-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        width: 100%;
+    }
+    
+    .role-row label {
+        width: calc(25% - 10px); /* 4 roles per row */
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+    
+    input[type="checkbox"] {
+        margin-right: 5px;
+    }
+    

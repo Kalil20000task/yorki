@@ -11,77 +11,12 @@ include "rolefilter.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Redirect</title>
-    <style>
-        /* Copy the styles from your HTML */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: url('images/ice.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-        }
-        .container {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 40%;
-        }
-        .container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #ccc;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: #444;
-            color: #f8f8f8;
-        }
-        .input-group input:focus {
-            border-color: #007bff;
-        }
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-        .buttons button {
-            width: 48%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .buttons .submit {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .input-group select, .input-group button {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #444;
-            color: #fff;
-            font-size: 16px;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-    </style>
+    <link href="menustyle.css" rel="stylesheet">
+
+
+
+
+
    
 </head>
 <body>
@@ -89,10 +24,11 @@ include "rolefilter.php";
     include "header.php";
     ?>
     <div class="container">
-    <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
-    <h2 style="margin: 0;">Select a Course</h2>
+    <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 0;">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto; margin: 0;">
+    <h2 style="margin: 0; line-height: 1;">Select a Course</h2>
 </div>
+
 
         
         <form method="POST" action="">
@@ -192,12 +128,13 @@ include "rolefilter.php";
         ?>
     </select>
 </div>
-
+    
      
 
     <div class="input-group">
-        <button type="submit" style="background-color: #ec971f;">Go</button>
+        <button type="submit" class="btn">Go</button>
     </div>
+    
 </form>
 
     </div>
