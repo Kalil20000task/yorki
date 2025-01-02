@@ -132,7 +132,7 @@ include "rolefilter.php";
      
 
     <div class="input-group">
-        <button type="submit" class="btn">Go</button>
+        <button type="submit" class="btn" >Go</button>
     </div>
     
 </form>

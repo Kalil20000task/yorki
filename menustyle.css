@@ -11,18 +11,19 @@ body {
 .container {
     margin: 50px auto;
     padding: 30px;
-    background: rgba(255, 255, 255, 0.9); /* Light background */
+    background: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     max-width: 500px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     color: #333; /* Text color */
 }
+/* background: rgba(0, 0, 0, 0.8); */
 
 .container h2 {
     text-align: center;
     margin-bottom: 20px;
     font-weight: bold;
-    color: #333; /* Dark header text */
+    color: #f8f8f8;
 }
 
 .input-group {
@@ -32,26 +33,32 @@ body {
 .input-group label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
+    /* font-weight: bold; */
+    color: #f8f8f8;
+}
+label{
+   
+    color: #f8f8f8;
 }
 
 .input-group input,
 .input-group select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 5px;
     font-size: 16px;
-    background-color: #f9f9f9; /* Light input fields */
-    color: #333; /* Dark text inside input */
+    /* background-color: #f9f9f9;
+    color: #333;  */
+    background-color: #444;
+    color: #f8f8f8;
 }
 
 .input-group input:focus,
 .input-group select:focus {
-    border-color: #007bff; /* Blue border on focus */
+    /* border-color: #007bff;  */
     outline: none;
-    box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5); /* Blue glow */
+    /* box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);  */
 }
 
 .buttons {
@@ -71,12 +78,12 @@ body {
 }
 
 .buttons .submit {
-    background-color: #f0ad4e; /* Orange button */
+    background-color: #f29b22; /* Orange button */
     color: #fff;
 }
 
 .buttons .submit:hover {
-    background-color: #ec971f; /* Darker orange on hover */
+    background-color: #fab24f; /* Darker orange on hover */
 }
 
 .buttons .reset {
@@ -99,12 +106,12 @@ body {
         border: none;
         border-radius: 5px;
         font-size: 16px;
-        background-color: #f0ad4e; /* Orange button */
+        background-color: #fba52c; /* Orange button */
         color: #fff;
         cursor: pointer;
     }
     .btn:hover {
-        background-color: #ec971f; /* Darker orange on hover */
+        background-color: #f19008; /* Darker orange on hover */
     }
     .roles-container {
         display: flex;

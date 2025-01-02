@@ -67,7 +67,7 @@ $studentResult = $conn->query($sql);
 
     <div class="input-group-wrapper">
         <div class="input-group">
-            <label for="finalproject">Final Project (30)</label>
+            <label for="finalproject">Final Exam (30)</label>
             <input type="number" id="finalproject" min="0" max="30" oninput="calculateTotal() " step="any">
         </div>
         <div class="input-group">

@@ -256,10 +256,20 @@ GROUP BY
             $students = [];
             while ($row2 = $data->fetch_assoc()) {
                 $total = 0;
+                if($courseFilter=="CNA24"){
+                    for ($i = 1; $i < 5; $i++) {
+                        $total += $row2['Term' . $i];
+                    }
+                    $total=$total/2;
+                    $total=$total + $row2['Term5'];
+                    $average = $total;
+                }
+                else{
                 for ($i = 1; $i < $termcount + 1; $i++) {
                     $total += $row2['Term' . $i];
                 }
                 $average = $total / $termcount;
+                }
                 $students[] = [
                     'id' => $row2['id'],
                     'student_name' => $row2['student_name'],
