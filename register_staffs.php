@@ -28,10 +28,11 @@ $courseResult = $conn->query($sql);
     include "header.php";
     ?>
     <div class="container">
-    <div class="text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto;">
+    <div style="display: flex; align-items: center; justify-content: center;">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto; margin-right: 6px;">
     <h2 style="margin: 0;">Register Staff Members</h2>
 </div>
+
       
         <form id="studentForm">
              <div class="input-group">

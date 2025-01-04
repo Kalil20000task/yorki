@@ -105,21 +105,93 @@ $conn->close();
             background-size: cover;
         }
 
+        form {
+            width: 400px; /* Set the form width */
+            padding: 20px;
+            margin: 50px auto;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .input-group label {
+            width: 30%; /* Set the width of the labels */
+            font-size: 14px;
+            margin-right: 10px;
+            color:rgb(0, 0, 0);
+        }
+
+        .input-group input {
+            width: 65%; /* Set the width of the input fields */
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .input-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ec971f;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .input-group button:hover {
+            background-color: #d88b1a;
+        }
+
         .error-message {
             color: red;
+            font-size: 14px;
+            text-align: center;
             margin-top: 10px;
         }
+        h2{
+            color:rgb(0, 0, 0);
+        }
+        
     </style>
 </head>
 <body>
-<div class="title">Train Up</div> <!-- Styled title on the background -->
+ <!-- Styled title on the background -->
 
-<div class="login-container">
-    <h2>Login</h2>
-    <form method="POST" action="">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+
+  
+    
+<form method="POST" action="">
+<div class="title" style="color:rgb(9, 90, 97);">TrainUp SMS</div>
+<div>
+<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 39px">
+    <img src="images/logo.png" alt="Logo" style="width: 69px; height: auto; margin-right: 6px;">
+    <h2 style="margin: 0;">Login</h2>
+</div>
+    </div>
+
+        <div class="input-group">
+            <label for="username">Username :</label>
+            <input type="text" name="username" placeholder="Username" required>
+        </div>
+
+        <div class="input-group" style="margin-bottom: 39px">
+            <label for="password">Password :</label>
+            <input type="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="input-group" >
+            <button class="btn" type="submit">Login</button>
+        </div>
+
         <?php if ($errorMessage): ?>
             <div class="error-message"><?php echo $errorMessage; ?></div>
         <?php endif; ?>

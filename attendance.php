@@ -7,10 +7,11 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 require "connection.php";
+$coursesql="SELECT DISTINCT courses,level,classes from course_names";
+$courseresult=$conn->query($coursesql);
 
-// Initialize variables for input
-// $expenseAmount = '';
-// $reason = '';
+
+
 $currentDate = date('Y-m-d');
 
 // Handle form submission
@@ -42,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Handle expense addition
        
-        $name = $_POST['name'];
+        $name = $_POST['studentFilter'];
         $reason = $_POST['reason'];
-        $course = $_POST['course'];
+        $course = $_POST['courseFilter'];
         
         
         // Remove commas for database storage
@@ -73,6 +74,8 @@ $attendanceResult = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Record</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -295,15 +298,36 @@ $attendanceResult = $conn->query($sql);
     <h2 style="margin: 0;">Student Attendance</h2>
 </div>
         <form method="POST" action="">
-            <div class="form-group">
-                <label for="StudentName">Student Name:</label>
-                <input type="text" id="StudentName" name="name" placeholder="Student Name" required  ">
-            </div>
+            
+            
+
+
             <div class="input-group">
-            <label for="coursename">Course Name:</label>
-            <select id="category" name="course">
-              
-                <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C3L</option>
+            <label for="courseFilter">Course Name:</label>
+            <select id="courseFilter" name="courseFilter">
+            <option value=''>Select course</option>
+             <?php 
+                 if ($courseresult->num_rows > 0) {
+                    while ($row = $courseresult->fetch_assoc()) {
+                        $coursename="class".$row['courses'].$row['level']."c".$row['classes'];
+                       
+                        echo "<option value='$coursename'>$coursename</option>";
+                    }
+                
+                }
+
+             
+             ?>
+              </select>
+            </div>
+            
+            <div class="input-group">
+            <label for="studentFilter">Select Student:</label>
+            <select id="studentFilter" name="studentFilter">
+                    <option value="">Select Student</option>
+                </select>
+            </div>
+                <!-- <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C3L</option>
                 <option value="Accounting_ACFN24_C2L">Accounting_ACFN24_C4L</option>
                 <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C5L</option>
                 <option value="Accounting_ACFN24_C6L">Accounting_ACFN24_C6L</option>
@@ -334,7 +358,7 @@ $attendanceResult = $conn->query($sql);
                 <option value="ENG24_A2-C4L">ENG24_A2-C4L</option>
                 <option value="ENG24_B1-C1L">ENG24_B1-C1L</option>
                 <option value="ENG24_B2-C1L">ENG24_B2-C1L</option>
-                <option value="IELTS24">IELTS</option>
+                <option value="IELTS24">IELTS</option> -->
 
 
 
@@ -342,8 +366,7 @@ $attendanceResult = $conn->query($sql);
 
 
 
-            </select>
-            </div>
+           
             <div class="input-group">
             <label for="category">Reason:</label>
             <select id="category" name="reason">
@@ -444,3 +467,33 @@ $attendanceResult = $conn->query($sql);
 <?php
 $conn->close(); // Close database connection
 ?>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // const dropdown = document.getElementById('dropdwn'); // Select the dropdown element
+        const courseFilter = document.getElementById('courseFilter');
+        const studentFilter = document.getElementById('studentFilter');
+
+        // Add an event listener to the dropdown
+        courseFilter.addEventListener('change', function () {
+            const selectedValue = this.value; // Get the selected value
+            fetchClasses(selectedValue); // Call fetchClasses with the selected value
+        });
+
+        // Fetch available classes based on course
+        function fetchClasses(course) {
+            fetch('get_filters3.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `course=${encodeURIComponent(course)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                studentFilter.innerHTML = '<option value="">All Students</option>'; // Clear and add default option
+                data.students.forEach(cls => {
+                    studentFilter.innerHTML += `<option value="${cls}">${cls}</option>`; // Add new options
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+    });
+</script>
