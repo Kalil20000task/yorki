@@ -16,6 +16,8 @@ $courseResult = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Redirect</title>
     <link href="menustyle.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 <?php include "header.php"; ?>
@@ -45,10 +47,16 @@ $courseResult = $conn->query($sql);
                 ?>
             </select>
         </div>
-        <div class="input-group">
+        <!-- <div class="input-group">
             <label for="class">Class:</label>
             <input type="number" min="0" max="20" name="class" id="class" placeholder="Enter class level">
-        </div>
+        </div> -->
+        <div class="input-group">
+            <label for="class">Select Class:</label>
+            <select id="class" name="class">
+                    <option value="">Select Class</option>
+                </select>
+            </div>
         <div class="input-group">
             <label for="level">Level Name:</label>
             <select id="level" name="level">
@@ -90,3 +98,33 @@ $courseResult = $conn->query($sql);
 </script>
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // const dropdown = document.getElementById('dropdwn'); // Select the dropdown element
+        const courseFilter = document.getElementById('course');
+        const classFilter = document.getElementById('class');
+
+        // Add an event listener to the dropdown
+        courseFilter.addEventListener('change', function () {
+            const selectedValue = this.value; // Get the selected value
+            fetchClasses(selectedValue); // Call fetchClasses with the selected value
+        });
+
+        // Fetch available classes based on course
+        function fetchClasses(course) {
+            fetch('get_studentfilters.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `course=${encodeURIComponent(course)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                classFilter.innerHTML = '<option value="">All Students</option>'; // Clear and add default option
+                data.students.forEach(cls => {
+                    classFilter.innerHTML += `<option value="${cls}">${cls}</option>`; // Add new options
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+    });
+</script>

@@ -225,6 +225,10 @@ include "rolefilter.php";
                 $url = "cnamarklistformatterm5.php?course=$selectedCourse&class=$class&term=$term&level=$level";
                 echo "<script>window.location.href='$url';</script>";
                 exit;
+            case 'french25-1':
+                $url = "frenchmarklistformatterm1.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+                exit;    
             default:
                 echo '<p style="color: red; text-align: center;">invalid course selection!</p>';
         }

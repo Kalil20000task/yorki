@@ -9,121 +9,133 @@ if(isset($_POST['studentName'])){
 // here u are creating table for the students of each course (course includes coursename and class(batch)name)
 
     $courseandclass=$coursename.$levelname."class".$classname;
-    switch($courseandclass){
-        case 'ACFNs24class5':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'ACFNs24class6':
-            $tablename="class".$coursename."C".$classname; 
-            break;       
-        case 'ACFN24class3':
-            $tablename="class".$coursename."C".$classname; 
-            break;
+    $tablename="class".$coursename.$levelname."c".$classname;
+    // switch($courseandclass){
+    //     case 'acfn24class5':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'acfn24class6':
+    //         $tablename="class".$coursename."c".$classname; 
+    //         break;       
+    //     case 'acfn24class3':
+    //         $tablename="class".$coursename."c".$classname; 
+    //         break;
             
-        case 'ACFN24class4':
-            $tablename="class".$coursename."C".$classname;     
-            break;
+    //     case 'acfn24class4':
+    //         $tablename="class".$coursename."c".$classname;     
+    //         break;
 
-        case 'ACFN24class6':
-            $tablename="class".$coursename."C".$classname;  
-            break;
+    //     case 'acfn24class6':
+    //         $tablename="class".$coursename."c".$classname;  
+    //         break;
         
-        case 'CNA24class4':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'CNA24class5':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'CNA24class6':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'CNA24class7':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'DMA24class1':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'DMA24class2':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'DMA24class3':
-            $tablename="class".$coursename."C".$classname;
-            break;
-        case 'FRENCH24class1':
-            $tablename="class".$coursename."C".$classname;
-            break;
+    //     case 'cna24class4':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'cna24class5':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'cna24class6':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'cna24class7':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'dma24class1':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'dma24class2':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'dma24class3':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
+    //     case 'french24class1':
+    //         $tablename="class".$coursename."c".$classname;
+    //         break;
 
 
 
-            case 'IT24class4':
-                $tablename="class".$coursename."C".$classname;
-                break;
-            case 'IT24class5':
-                $tablename="class".$coursename."C".$classname;
-                break;
+    //         case 'it24class4':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
+    //         case 'it24class5':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
                 
-            case 'BM24class2':
-                $tablename="class".$coursename."C".$classname;
-                break;
-            case 'BM24class3':
-                $tablename="class".$coursename."C".$classname;
-                break;         
-            case 'CB24class4':
-                $tablename="class".$coursename."C".$classname;  
-                break;
-            case 'CB24class5':
-                $tablename="class".$coursename."C".$classname; 
-                break;
-            case 'PLMB24class1':
-                $tablename="class".$coursename."C".$classname;
-                break;
-            case 'PLMB24class2':
-                $tablename="class".$coursename."C".$classname;
-                break;
-            case 'AM24class1':
-                $tablename="class".$coursename."C".$classname;
-                break;
-            case 'AM24class2':
-                $tablename="class".$coursename."C".$classname;
-                break;
-            case 'IELTS24class1':
-                $tablename="class".$coursename."C".$classname;
-                break;
+    //         case 'bm24class2':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
+    //         case 'bm24class3':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;         
+    //         case 'cb24class4':
+    //             $tablename="class".$coursename."c".$classname;  
+    //             break;
+    //         case 'cb24class5':
+    //             $tablename="class".$coursename."c".$classname; 
+    //             break;
+    //         case 'plmb24class1':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
+    //         case 'plmb24class2':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
+    //         case 'am24class1':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
+    //         case 'am24class2':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
+    //         case 'ielts24class1':
+    //             $tablename="class".$coursename."c".$classname;
+    //             break;
                
+            
                 
-                
-                case 'ENG24A0class1':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                case 'ENG24A1class4':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                case 'ENG24A1class5':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                case 'ENG24A1class6':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                case 'ENG24A2class4':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                    case 'ENG24A2class5':
-                        $tablename="class".$coursename.$levelname."C".$classname;
-                        break;    
-                case 'ENG24B1class1':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                case 'ENG24B2class1':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                case 'ENG24B2class2':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-                case 'ENG24B1class2':
-                    $tablename="class".$coursename.$levelname."C".$classname;
-                    break;
-        }
-        if (!empty($tablename)) {
+    //             case 'eng24a0class1':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //             case 'eng24a1class4':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //             case 'eng24a1class5':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //             case 'eng24a1class6':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //             case 'eng24a2class4':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //                 case 'eng24a2class5':
+    //                     $tablename="class".$coursename.$levelname."c".$classname;
+    //                     break;    
+    //             case 'eng24b1class1':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //             case 'eng24b2class1':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //             case 'eng24b2class2':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //             case 'eng24b1class2':
+    //                 $tablename="class".$coursename.$levelname."c".$classname;
+    //                 break;
+    //     }
+    if (!empty($tablename)) {
+        // Check for duplicate studentname
+        $checkStmt = $conn->prepare("SELECT COUNT(*) AS count FROM $tablename WHERE studentname = ?");
+        $checkStmt->bind_param("s", $studentname);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        $row = $result->fetch_assoc();
+    
+        if ($row['count'] > 0) {
+            echo json_encode(["status" => "error", "message" => "Duplicate entry: Student name already exists."]);
+        } else {
+            // Insert new record
             $stmt = $conn->prepare("INSERT INTO $tablename (studentname, coursename, classname, levelname) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $studentname, $coursename, $classname, $levelname);
     
@@ -133,10 +145,15 @@ if(isset($_POST['studentName'])){
                 echo json_encode(["status" => "error", "message" => $stmt->error]);
             }
             $stmt->close();
-        } else {
-            echo json_encode(["status" => "error", "message" => "invalid course or class configuration."]);
         }
+        $checkStmt->close();
+    } else {
+        echo json_encode(["status" => "error", "message" => "Invalid course or class configuration."]);
+    }
+    
     
         $conn->close();
     }
     ?>
+
+    
