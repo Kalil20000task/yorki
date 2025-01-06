@@ -154,101 +154,82 @@ include "rolefilter.php";
         $selectedCourseterm=$selectedCourse.'-'.$term;
         
         switch ($selectedCourseterm) {
-            case 'ACFN24-1':
-            case 'ACFN24-2':    
-            case 'ACFN24-3':
-                            // header("Location: eng24marklistformatallterms.php?course=$selectedCourse&class=$class&level=$level&term=$term");
-                        $url = "acfnmarklistformatterm12and3.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-    
-                        echo "<script>window.location.href='$url';</script>";
-                        exit;
-            case 'ACFN24-4':
-            case 'ACFN24-5':    
-            case 'ACFN24-6':
-                                            // header("Location: eng24marklistformatallterms.php?course=$selectedCourse&class=$class&level=$level&term=$term");
-                    $url = "acfnmarklistformatterm45and6.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-                    
-                    echo "<script>window.location.href='$url';</script>";
-                    exit;            
-            case 'ACFNs24-1':
-            case 'ACFNs24-2':
-                    $url = "acfnsmarklistformat_term_1and2.php?course=$selectedCourse&class=$class&term=$term";
-
-                    echo "<script>window.location.href='$url';</script>";
-                    exit;
-
-                  
-            case 'ACFNs24-3' :
-                    // header('Location: acfns_term_1.php');
-                    // header("Location: acfnsmarklistformat_term_3.php?course=$selectedCourse&class=$class&term=$term");
-                    // echo "<script>window.location.href='acfnsmarklistformat_term_3.php.php';</script>";
-                    $url = "acfnsmarklistformat_term_3.php?course=$selectedCourse&class=$class&term=$term";
-
-                    echo "<script>window.location.href='$url';</script>";
-
-                exit;    
-            //for all english classes
-            case 'ENG24-1':
-            case 'ENG24-2':    
-            case 'ENG24-3':
-                        // header("Location: eng24marklistformatallterms.php?course=$selectedCourse&class=$class&level=$level&term=$term");
-                    $url = "eng24marklistformatallterms.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-
-                    echo "<script>window.location.href='$url';</script>";
-                    exit;
-            case 'DMA24-1':
-            case 'DMA24-2':
-            case 'DMA24-3':
+            case 'acfn24-1':
+            case 'acfn24-2':
+            case 'acfn24-3':
+                $url = "acfnmarklistformatterm12and3.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'acfn24-4':
+            case 'acfn24-5':
+            case 'acfn24-6':
+                $url = "acfnmarklistformatterm45and6.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'acfn24-1':
+            case 'acfn24-2':
+                $url = "acfnsmarklistformat_term_1and2.php?course=$selectedCourse&class=$class&term=$term";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'acfns24-3':
+                $url = "acfnsmarklistformat_term_3.php?course=$selectedCourse&class=$class&term=$term";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'eng24-1':
+            case 'eng24-2':
+            case 'eng24-3':
+                $url = "eng24marklistformatallterms.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'dma24-1':
+            case 'dma24-2':
+            case 'dma24-3':
                 $url = "dmmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-
                 echo "<script>window.location.href='$url';</script>";
                 exit;
-
-            case 'BM24-1':
+            case 'bm24-1':
                 $url = "bmmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-
                 echo "<script>window.location.href='$url';</script>";
                 exit;
-            case 'AM24-1':
+            case 'am24-1':
                 $url = "ammarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-    
                 echo "<script>window.location.href='$url';</script>";
-                exit;    
-            case 'CB24-1':
-            case 'CB24-2':
-            case 'CB24-3':
-                    $url = "cbmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-        
-                    echo "<script>window.location.href='$url';</script>";
-                    exit;
-            case 'IT24-1':
-            case 'IT24-2':
-            case 'IT24-3':
-                    $url = "itmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-                    
-                    echo "<script>window.location.href='$url';</script>";
-                    exit;        
-            case 'PLMB24-1':  
+                exit;
+            case 'cb24-1':
+            case 'cb24-2':
+            case 'cb24-3':
+                $url = "cbmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'it24-1':
+            case 'it24-2':
+            case 'it24-3':
+                $url = "itmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'plmb24-1':
                 $url = "plmbmarklistformat.php?course=$selectedCourse&class=$class&term=$term&level=$level";
                 echo "<script>window.location.href='$url';</script>";
                 exit;
-            case 'CNA24-1':
-            case 'CNA24-2':
-            case 'CNA24-3':
-                    $url = "cnamarklistformatterm1to3.php?course=$selectedCourse&class=$class&term=$term&level=$level";
-                     echo "<script>window.location.href='$url';</script>";
-                    exit;       
-            case 'CNA24-4':
+            case 'cna24-1':
+            case 'cna24-2':
+            case 'cna24-3':
+                $url = "cnamarklistformatterm1to3.php?course=$selectedCourse&class=$class&term=$term&level=$level";
+                echo "<script>window.location.href='$url';</script>";
+                exit;
+            case 'cna24-4':
                 $url = "cnamarklistformatterm4.php?course=$selectedCourse&class=$class&term=$term&level=$level";
                 echo "<script>window.location.href='$url';</script>";
-               exit;
-            case 'CNA24-5':
+                exit;
+            case 'cna24-5':
                 $url = "cnamarklistformatterm5.php?course=$selectedCourse&class=$class&term=$term&level=$level";
                 echo "<script>window.location.href='$url';</script>";
-               exit;
+                exit;
             default:
                 echo '<p style="color: red; text-align: center;">invalid course selection!</p>';
         }
+        
+        
     }
     ?>
 </body>

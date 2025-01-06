@@ -36,7 +36,7 @@ $studentResult = $conn->query($sql);
     include "header.php";
     ?>
 <div class="container">
-    <h2><?php echo $course . "_C" . $classname . "_term" . $term ?></h2>
+    <h2><?php echo $course . "_c" . $classname . "_term" . $term ?></h2>
 
     <!-- <div class="input-group">
         <label for="studentName">Student's Name</label>

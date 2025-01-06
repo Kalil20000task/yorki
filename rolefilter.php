@@ -39,45 +39,46 @@ if ($result->num_rows > 0) {
 }
 }
 
-else{
-    $placeholders = rtrim(str_repeat('?, ', count($roles)), ', ');
-
-    // Create the SQL query
-    $sql = "SELECT DISTINCT courses 
-            FROM course_names 
-            WHERE courses IN ($placeholders)";
-
-
-// $result = $conn->query($sql);
-// $courses = [];
-// while ($row = $result->fetch_assoc()) {
-//     $courses[] = $row['courses'];
-// }
-
-
-if ($stmt = $conn->prepare($sql)) {
-    // Bind the roles array to the statement dynamically
-    $types = str_repeat('s', count($roles)); // The types for bind_param (string for each role)
-        $stmt->bind_param($types, ...$roles); // Bind the roles dynamically
-
-        // Execute the statement
-        $stmt->execute();
-
-    // Get the results
-    $result = $stmt->get_result();
-
-    // Fetch and display the matching courses
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $courses[] = $row['courses'];
-        }
+else {
+    // Check if the roles array is empty
+    if (empty($roles)) {
+        echo "No roles found to filter courses.";
+        $courses = []; // Return an empty courses list
     } else {
-        echo "No matching courses found.";
-    }
+        // Create placeholders for roles dynamically
+        $placeholders = rtrim(str_repeat('?, ', count($roles)), ', ');
 
-    // Close the statement
-    $stmt->close();
-} else {
-    echo "Error preparing the SQL statement: " . $conn->error;
+        // Construct the SQL query
+        $sql = "SELECT DISTINCT courses 
+                FROM course_names 
+                WHERE courses IN ($placeholders)";
+
+        if ($stmt = $conn->prepare($sql)) {
+            // Bind the roles array to the statement dynamically
+            $types = str_repeat('s', count($roles)); // The types for bind_param (string for each role)
+            $stmt->bind_param($types, ...$roles); // Bind the roles dynamically
+
+            // Execute the statement
+            $stmt->execute();
+
+            // Get the results
+            $result = $stmt->get_result();
+
+            // Fetch and display the matching courses
+            $courses = [];
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $courses[] = $row['courses'];
+                }
+            } else {
+                echo "No matching courses found.";
+            }
+
+            // Close the statement
+            $stmt->close();
+        } else {
+            echo "Error preparing the SQL statement: " . $conn->error;
+        }
+    }
 }
-}?>
+?>

@@ -161,22 +161,27 @@
 
             if (in_array('admin', $role)) {
                 echo '<a href="attendance.php">Attendance</a>';
-                echo '<a href="marklistmenu.php">Add Mark</a>';
+                
                 echo '<a href="studentlist.php">Students</a>';
-                echo '<a href="marklist2.php">Mark List</a>';
-                echo '<a href="finalreport.php">Final Report</a>';
                 echo '<a href="register_student.php">Register Student</a>';
+                echo '<a href="marklist2.php">Mark List</a>';
+                echo '<a href="marklistmenu.php">Add Mark</a>';
+                echo '<a href="finalreport.php">Final Report</a>';
                 echo '<a href="register_staffs.php">Register Staff</a>';
             } elseif (in_array('office', $role)) {
                 echo '<a href="attendance.php">Attendance</a>';
-                echo '<a href="marklistmenu.php">Add Mark</a>';
                 echo '<a href="studentlist.php">Students</a>';
-                echo '<a href="marklist2.php">Mark List</a>';
-                echo '<a href="finalreport.php">Final Report</a>';
                 echo '<a href="register_student.php">Register Student</a>';
-            } else {
+                echo '<a href="marklist2.php">Mark List</a>';
                 echo '<a href="marklistmenu.php">Add Mark</a>';
-                echo '<a href="studentlist.php">Students</a>';
+                
+                
+                echo '<a href="finalreport.php">Final Report</a>';
+                
+            } else {
+                 echo '<a href="studentlist.php">Students</a>';
+                echo '<a href="marklistmenu.php">Add Mark</a>';
+               
                 echo '<a href="marklist2.php">Mark List</a>';
                 echo '<a href="finalreport.php">Final Report</a>';
             }
