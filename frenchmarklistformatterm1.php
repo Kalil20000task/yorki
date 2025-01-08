@@ -10,30 +10,16 @@ if (!isset($_SESSION['username'])) {
 require "connection.php";
 
 
-$course = isset($_GET['course']) ? preg_replace('/[^a-zA-Z0-9]/', '', $_GET['course']) : null;
-$classname = isset($_GET['class']) ? preg_replace('/[^a-zA-Z0-9]/', '', $_GET['class']) : null;
+$course = isset($_GET['course']) ? htmlspecialchars($_GET['course']) : 'N/A';
+$classname = isset($_GET['class']) ? htmlspecialchars($_GET['class']) : 'N/A';
+$term = isset($_GET['term']) ? htmlspecialchars($_GET['term']) : 'N/A';
 $level = isset($_GET['level']) ? preg_replace('/[^a-zA-Z0-9]/', '', $_GET['level']) : null;
-$term = isset($_GET['term']) ? preg_replace('/[^a-zA-Z0-9]/', '', $_GET['term']) : null;
 
 
-
-// Check if all parameters are valid
-if ($course && $classname && $level) {
-    // Construct the table name
-    $tablename = "class" . $course . $level . "c" . $classname;
-    $classtablename="class".$course.$level."c".$classname."marklist";
-
-    // Use a prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT studentname FROM `$tablename`");
-    if ($stmt) {
-        $stmt->execute();
-        $studentResult = $stmt->get_result();
-    } else {
-        echo "Invalid table name or query.";
-    }
-} else {
-    echo "Invalid parameters provided.";
-}
+$tablename="class".$course."c".$classname;
+$classtablename="class".$course.$level."c".$classname."marklist";
+$sql = "SELECT studentname FROM $tablename";
+$studentResult = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +32,7 @@ if ($course && $classname && $level) {
  
 </head>
 <body>
-    <?php
+<?php
     include "header.php";
     ?>
 <div class="container">
