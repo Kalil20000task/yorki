@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Record</title>
+    <title>Responsive Navigation</title>
     <style>
         body {
             font-family: 'Roboto', Arial, sans-serif;
@@ -41,8 +41,8 @@
         }
 
         .header .logo-title img {
-            height: 40px; /* Adjust the height of the logo */
-            margin-right: 5px; /* Space between the logo and the title */
+            height: 40px;
+            margin-right: 5px;
         }
 
         .header .title h2 {
@@ -50,6 +50,11 @@
             font-size: 22px;
             font-weight: bold;
             color: #fff;
+        }
+
+        .header .nav-links {
+            display: flex;
+            align-items: center;
         }
 
         .header a {
@@ -84,11 +89,11 @@
         }
 
         .header .username {
-            /* margin-left: 5px; */
             font-size: 16px;
             color: #fff;
         }
 
+        /* Drawer Style */
         .drawer {
             height: 100%;
             width: 0;
@@ -126,24 +131,20 @@
             color: #fff;
         }
 
+        /* Responsive Styles */
         @media (max-width: 768px) {
-            .header a {
+            .header .nav-links {
                 display: none;
             }
+
             .header .menu-icon {
                 display: block;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .drawer {
-                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header Navigation -->
+    <!-- Header -->
     <div class="header">
         <span class="menu-icon" onclick="openDrawer()">&#9776;</span>
         <div class="logo-title">
@@ -152,16 +153,53 @@
                 <h2 style="color:#242424">TrainUp SMS</h2>
             </div>
         </div>
-        <?php
-       
+        <div class="nav-links">
+            <!-- Role-based user links -->
+            <?php 
+            if (isset($_SESSION['role'])) {
+                $role = $_SESSION['role'];
 
-        // Check user role and display links accordingly
+                if (in_array('admin', $role)) {
+                    echo '<a href="attendance.php">Attendance</a>';
+                    echo '<a href="index.php">Students</a>';
+                    echo '<a href="register_student.php">Register Student</a>';
+                    echo '<a href="marklist2.php">Mark List</a>';
+                    echo '<a href="marklistmenu.php">Add Mark</a>';
+                    echo '<a href="finalreport.php">Final Report</a>';
+                    echo '<a href="register_staffs.php">Register Staff</a>';
+                } elseif (in_array('office', $role)) {
+                    echo '<a href="index.php">Attendance</a>';
+                    echo '<a href="studentlist.php">Students</a>';
+                    echo '<a href="register_student.php">Register Student</a>';
+                    echo '<a href="marklist2.php">Mark List</a>';
+                    echo '<a href="marklistmenu.php">Add Mark</a>';
+                    echo '<a href="finalreport.php">Final Report</a>';
+                } else {
+                    echo '<a href="index.php">Students</a>';
+                    echo '<a href="marklistmenu.php">Add Mark</a>';
+                    echo '<a href="marklist2.php">Mark List</a>';
+                    echo '<a href="finalreport.php">Final Report</a>';
+                }
+            }
+            ?>
+        </div>
+        <a class="logout-button" href="logout.php">Logout</a>
+        <?php
+        if (isset($_SESSION['username'])) {
+            echo '<div class="username" style="color:gold">Hello, ' . htmlspecialchars($_SESSION['username']) . '</div>';
+        }
+        ?>
+    </div>
+
+    <!-- Drawer -->
+    <div class="drawer" id="drawer">
+        <span class="close-btn" onclick="closeDrawer()">&times;</span>
+        <?php 
         if (isset($_SESSION['role'])) {
             $role = $_SESSION['role'];
 
             if (in_array('admin', $role)) {
                 echo '<a href="attendance.php">Attendance</a>';
-                
                 echo '<a href="index.php">Students</a>';
                 echo '<a href="register_student.php">Register Student</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
@@ -174,26 +212,15 @@
                 echo '<a href="register_student.php">Register Student</a>';
                 echo '<a href="marklist2.php">Mark List</a>';
                 echo '<a href="marklistmenu.php">Add Mark</a>';
-                
-                
                 echo '<a href="finalreport.php">Final Report</a>';
-                
             } else {
-                 echo '<a href="index.php">Students</a>';
+                echo '<a href="index.php">Students</a>';
                 echo '<a href="marklistmenu.php">Add Mark</a>';
-               
                 echo '<a href="marklist2.php">Mark List</a>';
                 echo '<a href="finalreport.php">Final Report</a>';
             }
         }
         ?>
-        <a class="logout-button" href="logout.php">Logout</a>
-        <?php
-        if (isset($_SESSION['username'])) {
-            echo '<div class="username" style="color:gold">Hello,' . htmlspecialchars($_SESSION['username']) . '</div>';
-        }
-        ?>
-
     </div>
 
     <script>
