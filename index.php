@@ -1,6 +1,6 @@
 <?php
-session_start(); // Start session management
-
+// session_start(); // Start session management
+include "rolefilter.php";
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
     header('Location: login.php'); // Redirect to login page if not logged in
@@ -13,58 +13,21 @@ require "connection.php";
 // $reason = '';
 $currentDate = date('Y-m-d');
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['delete'])) {
-        // Handle deletion
-        $idToDelete = $_POST['delete'];
-        $deleteSql = "DELETE FROM attendance_table WHERE id = $idToDelete";
-        $conn->query($deleteSql);
-    } elseif (isset($_POST['export'])) {
-        // Handle CSV export
-        $filename = "attendance_" . date('Y/m/d') . ".csv";
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
-        // Output data to CSV
-        $output = fopen('php://output', 'w');
-        fputcsv($output, ['ID', 'Name', 'Course','Reason' ,'Date']); // CSV header
+include "header.php";
 
-        $sql = "SELECT * FROM attendance_table";
-        $attendanceResult = $conn->query($sql);
-        if ($attendanceResult->num_rows > 0) {
-            while ($row = $attendanceResult->fetch_assoc()) {
-                fputcsv($output, $row);
-            }
-        }
-        fclose($output);
-        exit();
-    } else {
-        // Handle expense addition
-       
-        $name = $_POST['name'];
-        $reason = $_POST['reason'];
-        $course = $_POST['course'];
-        
-        
-        // Remove commas for database storage
-        // $expenseAmount = str_replace(',', '', $expenseAmount);
-        
-        // Insert data into the database
-        $sql = "INSERT INTO attendance_table (name,course, reason, date) VALUES ('$name', '$course', '$reason','$currentDate')";
-        if ($conn->query($sql) === TRUE) {
-            // Redirect after successful submission to prevent form resubmission on refresh
-            header('Location: ' . $_SERVER['PHP_SELF']);
-            exit(); // Ensure no further code is executed
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    }
+
+// If filters are applied and data needs to be fetched
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filter'])) {
+    $courseFilter = $_POST['course'];
+    $classFilter = $_POST['class'];
+    $levelFilter = $_POST['level'] ?? '';
+
+    // Dynamically create table name
+    $batchname = "class" . $courseFilter . $levelFilter . "c" . $classFilter ;
+    $sql = "SELECT * FROM `$batchname`";  // Adjust this as per your actual schema
+    $data = $conn->query($sql);
 }
-
-// Fetch existing expenses
-$sql = "SELECT * FROM attendance_table order by id desc limit 15 ";
-$attendanceResult = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -72,347 +35,265 @@ $attendanceResult = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Record</title>
-    <style>
-        /* Styles remain unchanged */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: url('images/ice.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-        }
-        .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .header a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        .header .logout-button {
-            background-color: red; /* Red color for the logout button */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none; /* Remove underline from link */
-            display: inline-block; /* Allow padding and background */
-        }
-        .drawer {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #333;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-        .drawer a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 22px;
-            color: #fff;
-            display: block;
-            transition: 0.3s;
-        }
-        .drawer a:hover {
-            background-color: #575757;
-        }
-        .drawer .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-            cursor: pointer;
-        }
-        .container {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 40%;
-        }
-        .container h2 {
-            text-align: center;
-        }
-        .tablecontainer {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            color: #fff;
-            width: 80%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            table-layout: fixed;
-        }
-        table, th, td {
-            border: 1px solid #555;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-            word-break: break-word;
-            vertical-align: middle;
-        }
-        th {
-            background-color: #555;
-            color: #fff;
-        }
-        tr:nth-child(even) {
-            background-color: #444;
-        }
-        input[type="text"], input[type="number"] {
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            width: calc(50% - 22px);
-            margin-bottom: 10px;
-            background-color: #444;
-            color: #fff;
-            display: inline-block;
-        }
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            width: 150px;
-            margin-top: 10px;
-            align-self: center;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        /* Add this style to your existing <style> section */
-        .delete-button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #dc3545; /* Red background color */
-            color: #fff;
-            cursor: pointer;
-            width: 80px; /* Adjust width if needed */
-        }
+    <title>Marks List</title>
+    <!-- <script src="table_edit.js"></script> -->
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .delete-button:hover {
-            opacity: 0.9; /* Slightly darken on hover */
-        }
+<!-- Bootstrap JavaScript (important for modal functionality) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="liststyles.css" rel="stylesheet">
 
-        .form-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            margin-right: 10px;
-            width: 30%;
-            text-align: right;
-        }
-        .form-actions {
-            display: flex;
-            justify-content: center;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            margin-left: 50px;
-            width: 30%;
-            text-align: right;
-        }
-        .input-group input, .input-group select {
-            
-            width: 60%;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            font-size: 16px;
-            background-color: #444;
-            color: #f8f8f8;
-            margin-left: 10px;
-        }
-        .input-group input:focus, .input-group select:focus {
-            border-color: #007bff;
-        }
-    </style>
+
+<!-- Your custom JS -->
+
+
+
+
+   
+</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Filter Page</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const courseFilter = document.getElementById('courseFilter');
+            const classFilter = document.getElementById('classFilter');
+            const levelFilter = document.getElementById('levelFilter');
+
+            // Fetch classes and levels when course or class changes
+            courseFilter.addEventListener('change', function () {
+                fetchClasses(this.value);
+            });
+
+            classFilter.addEventListener('change', function () {
+                fetchLevels(courseFilter.value, this.value);
+            });
+
+            // Fetch available classes based on course
+            function fetchClasses(course) {
+                fetch('get_filters2.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `course=${encodeURIComponent(course)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    classFilter.innerHTML = '<option value="">All Classes</option>';
+                    data.classes.forEach(cls => {
+                        classFilter.innerHTML += `<option value="${cls}">${cls}</option>`;
+                    });
+                });
+            }
+
+            // Fetch available levels based on course and class
+            function fetchLevels(course, classVal) {
+                fetch('get_filters2.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `course=${encodeURIComponent(course)}&class=${encodeURIComponent(classVal)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    levelFilter.innerHTML = '<option value="">Select Level</option>';
+                    data.levels.forEach(level => {
+                        levelFilter.innerHTML += `<option value="${level}">${level}</option>`;
+                    });
+                });
+            }
+        });
+    </script>
+    
 </head>
 <body>
-    <?php
-    include "header.php";
-    ?>
- <!-- Drawer Navigation -->
- 
-    
 
-    <div class="container">
-        <h2>Student Record</h2>
-        <form method="POST" action="">
-            <div class="form-group">
-                <label for="StudentName">Student Name:</label>
-                <input type="text" id="StudentName" name="name" placeholder="Student Name" required  ">
-            </div>
-            <div class="input-group">
-            <label for="coursename">Course Name:</label>
-            <select id="category" name="course">
-              
-                <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C3L</option>
-                <option value="Accounting_ACFN24_C2L">Accounting_ACFN24_C4L</option>
-                <option value="Accounting_ACFN24_C3L">Accounting_ACFN24_C5L</option>
-                <option value="Accounting_ACFN24_C6L">Accounting_ACFN24_C6L</option>
-                <option value="Accounting_ACFNS24_C5L">Accounting_ACFNS24_C5L</option>
-                <option value="Nursing_CNA24_C4L">Nursing_CNA24_C4L</option>
-                <option value="Nursing_CNA24_C5L">Nursing_CNA24_C5L</option>
-                <option value="Nursing_CNA24_C6L">Nursing_CNA24_C6L</option>
-                <option value="Nursing_CNA24_C7L">Nursing_CNA24_C7L</option>
-
-                <option value="Digital Marketing_DMA24_C1L">Digital Marketing_DMA24_C1L</option>
-                <option value="Digital Marketing_DMA24_C2L">Digital Marketing_DMA24_C2L</option>
-                <option value="IT_IT24_C4L">IT_IT24_C4L</option> 
-                <option value="IT_IT24_C5L">IT_IT24_C5L</option> 
-                <option value="BM24_C1L">BM24_C1L</option> 
-                <option value="CB24_C4L">CB24_C4L</option>
-                <option value="CB24_C5L">CB24_C5L</option>
-
-                <option value="PLMB_C1L">PLMB24_C1L</option> 
-                <option value="PLMB_C2L">PLMB24_C2L</option> 
-
-                <option value="AM24_C1L">AM24_C1L</option>
-                <option value="AM24_C2L">AM24_C2L</option>
-
-                <option value="ENG24_A0-C1L">ENG24_A0-C1L</option>
-                <option value="ENG24_A0-C4L">ENG24_A1-C4L</option>
-                <option value="ENG24_A1-C5L">ENG24_A1-C5L</option>
-                <option value="ENG24_A1-C6L">ENG24_A1-C6L</option>
-                <option value="ENG24_A2-C4L">ENG24_A2-C4L</option>
-                <option value="ENG24_B1-C1L">ENG24_B1-C1L</option>
-                <option value="ENG24_B2-C1L">ENG24_B2-C1L</option>
-                <option value="IELTS24">IELTS</option>
-
-
-
-
-
-
-
-            </select>
-            </div>
-            <div class="input-group">
-            <label for="category">Reason:</label>
-            <select id="category" name="reason">
-                <option value="Notprovided">Not provided</option>
-                <option value="Sick">Sick</option>
-                <option value="Acknowledged">Acknowledged</option>
-                <option value="Busy">Busy</option>
-                <option value="Drop out">Drop Out</option>
-                <option value="Pending">pending</option>
-                <option value="Appointment">appointment</option>
-                <option value="Couldnot contact">couldnot contact</option>
-                <option value="Rain">Rain</option>
-                <option value="Payment">Payment</option>
-                <option value="Family issue">Family issue</option>
-                
-            </select>
-           </div>
-
-           
-            <div class="input-group">
-            <input type="hidden" name="date" value="<?php echo $currentDate; ?>">
-            <div class="form-actions">
-                <button type="submit">Submit</button>
-            </div>
-    </div>
-
-        </form>
-    </div>
-
-    <!-- Expenses Table -->
-    <div class="tablecontainer">
-        <h2>Student Record</h2>
-        <form method="POST" action="">
-            <button type="submit" name="export" style="margin-bottom: 20px; background-color: #28a745;">Export to CSV</button>
-        </form>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Course</th>
-                    <th>Reason</th>
-                    <th>Date</th>
-                    <th>Manage</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Fetch attendanceResult from the database
-                $totalSum = 0;
-                if ($attendanceResult->num_rows > 0) {
-                    while ($row = $attendanceResult->fetch_assoc()) {
-                        
-                               
-                        echo "<tr>
-                                <td>{$row['id']}</td>
-                                <td>{$row['name']} </td>
-                                <td>{$row['course']} </td>
-                                <td>{$row['reason']}</td>
-                                <td>{$row['date']}</td>
-                                <td>
-                        <form method='POST' action='' style='display:inline;'>
-                            <button type='submit' name='delete' value='{$row['id']}' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this expense?');\">Delete</button>
-                        </form>
-                    </td>
-
-                              </tr>";
-                        // $totalSum += $row['expense']; // Summing up expenses
-                    }
-                } else {
-                    echo "<tr><td colspan='5'>No attendanceResult found.</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+<div class="container">
+    <div>
+        <h2><?php 
+        if(isset($_POST['course'])&& isset($_POST['class'])){
+            echo $batchname;
+        }
+        else{
+            echo "<h4>Select Batch</h4>";
+        }
         
+        ?> </h2>
+    <div>
+    <form method="POST" class="filter">
+        <select id="courseFilter" name="course">
+            <option value="">Select Course</option>
+            <?php foreach ($courses as $course): ?>
+                <option value="<?= htmlspecialchars($course) ?>"><?= htmlspecialchars($course) ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <select id="classFilter" name="class">
+            <option value="">Select Class</option>
+        </select>
+
+        <select id="levelFilter" name="level">
+            <option value="">Select Level For English Course only</option>
+        </select>
+
+        <button type="submit" name="filter">Filter</button>
+    </form>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Row</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="border: none; background: transparent; color: #007bff; font-size: 1.5rem; padding: 0.5rem 1rem;">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+             
+
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div id="editFields">
+                            <!-- Dynamic form fields go here -->
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script>
-        function openDrawer() {
-            document.getElementById("drawer").style.width = "250px";
-        }
+    <?php if (isset($data)): ?>
+        <table>
+            <?php
+        if ($data->num_rows > 0) {
+    // Fetch field names dynamically
+    $fields = $data->fetch_fields(); 
 
-        // Function to close the drawer
-        function closeDrawer() {
-            document.getElementById("drawer").style.width = "0";
+    echo "<thead><tr>";
+    foreach ($fields as $field) {
+        echo "<th>" . htmlspecialchars($field->name) . "</th>";
+    }
+    echo "<th>Edit</th>";
+    echo "<th>Delete</th>";
+    echo "</tr></thead>";
+
+    echo "<tbody>";
+    while ($row = $data->fetch_assoc()) {
+        echo "<tr>";
+        foreach ($row as $value) {
+            echo "<td>" . htmlspecialchars($value) . "</td>";
         }
-        function formatNumber(input) {
-            // Remove non-numeric characters and format number
-            let value = input.value.replace(/,/g, '');
-            input.value = new Intl.NumberFormat().format(value);
-        }
-    </script>
+        echo "<td>
+              <button class='btn btn-primary editbtn' data-id='{$row['ID']}' data-table='$batchname'>Edit</button>
+            </td>";
+        echo "<td>
+            <button class='btn btn-danger deletebtn' data-id='{$row['ID']}' data-table='$batchname'>Delete</button>
+          </td>";
+       
+        echo "</tr>";
+    }
+    echo "</tbody>";
+} else {
+    echo "<thead><tr><th colspan='100%'>No records found</th></tr></thead>";
+    echo "<tbody><tr><td colspan='100%'>Please select both course and class.</td></tr></tbody>";
+}
+include 'edit_modal.php';
+
+        ?>
+    </tbody>
+</table>
+</container>
+
+        <form method="POST" action="export2.php">
+            <input type="hidden" name="batchname" class="export-btn" value="<?= $batchname ?>">
+            <button type="submit" class="export-btn2">Export to CSV</button>
+        </form>
+    <?php endif; ?>
+
 </body>
-</html>
+<script>
+    // ajax to handel edit functionality
+    $(document).ready(function () {
+        $(document).on('click', '.editbtn', function () {
+            const batchname = "<?php echo $batchname; ?>";
 
-<?php
-$conn->close(); // Close database connection
-?>
+            const id = $(this).data('id');
+            // alert(id);
+            // const batchname = $('#batchname').val();
+            $.ajax({
+                url: 'fetchstudent_row.php',
+                type: 'POST',
+                data: { id, batchname },
+                success: function (data) {
+                    $('#editFields').html(data);
+                    $('#editModal').modal('show');
+
+                },
+            });
+        });
+        $('#editForm').on('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const formData = $(this).serialize(); // Serialize form data
+    const batchname = "<?php echo $batchname; ?>"; // Ensure this is properly set
+
+    $.ajax({
+        url: 'updatestudent_row.php',
+        type: 'POST',
+        data: formData + '&batchname=' + batchname, // Append batchname to formData
+        success: function (response) {
+            try {
+                const res = JSON.parse(response); // Parse JSON response
+                if (res.status === 'success') {
+                    alert(res.message); // Display success message
+                    $('#editModal').modal('hide');
+                    location.reload(); // Refresh table data
+                } else {
+                    alert('Error: ' + res.message); // Display error message
+                }
+            } catch (e) {
+                alert('Invalid response from server');
+                console.error(response); // Log response for debugging
+            }
+        },
+        error: function (xhr, status, error) {
+            alert('AJAX Error: ' + status); // Handle AJAX errors
+        },
+    });
+});
+$(document).on('click', '.deletebtn', function () {
+    const batchname = "<?php echo $batchname; ?>";
+    const id = $(this).data('id');
+
+    // Ask the user for confirmation before deleting
+    const confirmDelete = confirm("Are you sure you want to delete this student?");
+
+    if (confirmDelete) {
+        // Proceed with the deletion if "Yes"
+        $.ajax({
+            url: 'deletstudent_row.php',
+            type: 'POST',
+            data: { id, batchname },
+            success: function (data) {
+                // You can modify this line to display a success message
+                alert("The student record has been deleted successfully.");
+
+                // Optionally, you can reload or update the UI if necessary
+               location.reload();
+            },
+            error: function () {
+                // Handle errors if any
+                alert("There was an error deleting the record. Please try again.");
+            }
+        });
+    } else {
+        // If "No" is clicked, nothing happens
+        return false;
+    }
+});
+
+
+
+
+    });
+</script>
+</html>
