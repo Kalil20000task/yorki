@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['username'] = $user;
 
                     // Redirect to the student list page
-                    header('Location: studentlist.php');
+                    header('Location: index.php');
                     exit();
                 } else {
                     $errorMessage = 'Error fetching roles: ' . $conn->error;
