@@ -187,7 +187,7 @@ $studentResult = $conn->query($sql);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 if(xhr.responseText.includes("Duplicate")){
-                    alert ("you are trying to insert a duplicate record");
+                    alert ("you are trying to insert a duplicate record, you can edit the record in the marklist");
                 }
                 else{
                     alert(xhr.responseText);

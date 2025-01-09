@@ -269,6 +269,7 @@ tr:nth-child(even) {
 </div>
 
     <table id="tabledata">
+      
     <?php if (isset($data)): ?>
        
             <?php
@@ -284,21 +285,29 @@ tr:nth-child(even) {
     echo "</tr></thead>";
 
     echo "<tbody>";
+    $classname = "class" . $courseFilter . $levelFilter . "c" . $classFilter ;
     while ($row = $data->fetch_assoc()) {
-        echo "<tr>";
-        foreach ($row as $value) {
-            echo "<td>" . htmlspecialchars($value) . "</td>";
-        }
-        echo "<td>
-        <button class='btn btn-primary editBtn' data-id='{$row['id']}'>Edit</button>
         
-      </td>";
-        echo "</tr>";
+        $checkstudent="SELECT * FROM `$classname` where studentname='{$row['student_name']}'";
+        $checkdata = $conn->query($checkstudent);
+
+        if ($checkdata->num_rows > 0) {
+                    echo "<tr>";
+                foreach ($row as $value) {
+                    echo "<td>" . htmlspecialchars($value) . "</td>";
+                }
+                echo "<td>
+                <button class='btn btn-primary editBtn' data-id='{$row['id']}'>Edit</button>
+                
+            </td>";
+                echo "</tr>";
+        }
+       
     }
     echo "</tbody>";
 } else {
     echo "<thead><tr><th colspan='100%'>No records found</th></tr></thead>";
-    echo "<tbody><tr><td colspan='100%'>Please select both course and class.</td></tr></tbody>";
+    echo "<tbody><tr><td colspan='100%'>Please make sure the course and class exist.</td></tr></tbody>";
 }
 
 

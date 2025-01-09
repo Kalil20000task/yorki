@@ -165,15 +165,18 @@ $studentResult = $conn->query($sql);
             finalexam: document.getElementById('finalexam').value,
             total: total,
         };
+       
 
         // AJAX POST request
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "dmmarkinserter.php", true);
+         
+        xhr.open("POST", "http://trainupsms.ct.ws/dmmarkinserter.php", true);
+        
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 if(xhr.responseText.includes("Duplicate")){
-                    alert ("you are trying to insert a duplicate record");
+                    alert ("you are trying to insert a duplicate record, you can edit the record in the marklist");
                 }
                 else{
                     alert(xhr.responseText);
@@ -181,6 +184,9 @@ $studentResult = $conn->query($sql);
                 }
                 document.querySelector('form').reset();
                 document.getElementById('total-display').value = '';
+            }
+            else{
+                // alert(data);
             }
         };
         xhr.send(JSON.stringify(data));

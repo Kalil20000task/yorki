@@ -170,8 +170,15 @@ GROUP BY
             echo "</tr></thead>";
             
             // Step 1: Calculate averages for all students
+            $classname = "class" . $courseFilter . $levelFilter . "c" . $classFilter ;
             $students = [];
             while ($row2 = $data->fetch_assoc()) {
+                    
+            $checkstudent="SELECT * FROM `$classname` where studentname='{$row2['student_name']}'";
+            $checkdata = $conn->query($checkstudent);
+            if ($checkdata->num_rows > 0) {
+
+
                 $total = 0;
                 if($courseFilter=="CNA24"){
                     for ($i = 1; $i < 5; $i++) {
@@ -196,6 +203,7 @@ GROUP BY
                     'total' => $total,
                     'average' => $average
                 ];
+            }
             }
             
             // Step 2: Sort students by average in descending order
